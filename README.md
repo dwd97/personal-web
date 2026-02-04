@@ -1,2 +1,3 @@
 # osobni-web
-Osobní webová stránka - davidkrejci.cz
+
+Osobní webová stránka - davidkrejci.dev

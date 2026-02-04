@@ -4,9 +4,8 @@ import (
 	"bufio"
 	"fmt"
 	"io"
-	"log"
-	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -71,55 +70,61 @@ func parseHeader(line string) (int, string, bool) {
 func main() {
 	outputDir := "public"
 
-	os.RemoveAll(outputDir)
-	if err := os.MkdirAll(outputDir + "/posts", 0755); err != nil {
-		panic(err)
-	}
+    os.RemoveAll(outputDir)
+    if err := os.MkdirAll(outputDir + "/posts", 0755); err != nil {
+        panic(err)
+    }
 
-	mux := http.NewServeMux()
+    files, err := os.ReadDir("posts")
+    if err != nil {
+        panic(err)
+    }
 
-	mux.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path != "/" {
-			http.NotFound(w, r)
-			return
-		}
-		http.ServeFile(w,r,"index.html")
-	})
+    fmt.Println("Generating site...")
 
-	fileServer := http.FileServer(http.Dir("assets"))
-	mux.Handle("GET /assets/", http.StripPrefix("/assets/", fileServer))
-
-	mux.HandleFunc("GET /posts/{slug}", handlePost)
-
-	fmt.Println("Server starting on the https://localhost:3030")
-	err := http.ListenAndServe(":3030", mux)
-	if err != nil {
-		log.Fatal(err)
-	}
+    for _, file := range files {
+        if filepath.Ext(file.Name()) == ".md" {
+            processFile(file.Name(), outputDir)
+        }
+    }
+    fmt.Println("Done! Site generated in /public")
 }
 
-func handlePost(w http.ResponseWriter, r *http.Request) {
-	slug := r.PathValue("slug")
+func processFile(fileName, outputDir string) {
+    // 1. Open Input (Markdown)
+    inputPath := filepath.Join("posts", fileName)
+    f, err := os.Open(inputPath)
+    if err != nil {
+        panic(err)
+    }
+    defer f.Close()
 
-	path := "posts/" + slug + ".md"
+    // 2. Parse
+    doc := ParseMarkdownReader(f)
 
-	f,err := os.Open(path)
-	if err != nil {
-		http.NotFound(w, r)
-		return
-	}
+    // 3. Create Output File (HTML)
+    htmlName := strings.Replace(fileName, ".md", ".html", 1)
+    outputPath := filepath.Join(outputDir, "posts", htmlName)
+    
+    outFile, err := os.Create(outputPath)
+    if err != nil {
+        panic(err)
+    }
+    defer outFile.Close()
 
-	defer f.Close()
+    // 4. Write Content
+    writer := bufio.NewWriter(outFile)
+    
+    // Write Header
+    writer.WriteString("<!doctype html><html><head><title>Post</title></head><body>")
+    writer.WriteString("<nav><a href='/'>&larr; Back to Home</a></nav><hr>")
 
-	doc := ParseMarkdownReader(f)
+    // Write Body
+    for _, el := range doc {
+        writer.WriteString(el.Render() + "\n")
+    }
 
-	fmt.Fprint(w, "<!doctype html><html><head><title>Post</title></head><body>")
-
-	fmt.Fprint(w, "<nav><a href='/'>&larr; Back to Home</a></nav><hr>")
-
-	for _, el := range doc {
-		fmt.Fprint(w, el.Render())
-	}
-
-	fmt.Fprint(w, "</body></html>")
+    // Write Footer
+    writer.WriteString("</body></html>")
+    writer.Flush()
 }
