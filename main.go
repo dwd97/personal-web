@@ -25,7 +25,7 @@ type SlugReader interface {
 type FileReader struct {}
 
 func (fr FileReader) Read(slug string) (string, error) {
-	f, err := os.Open(slug + ".md")
+	f, err := os.Open("posts/" + slug + ".md")
 	if err != nil {
 		return "", err
 	}
