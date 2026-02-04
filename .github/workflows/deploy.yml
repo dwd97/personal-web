@@ -21,16 +21,17 @@ jobs:
         with:
           go-version: "1.25.x"
 
-      - name: Build Site (Generate HTML)
+      - name: Build Site
         run: |
-          cp index.html
-          cp -r assets public/assets
+          go run main.go
+          cp index.html public/
+          cp -r assets public/
 
-      - name:
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: "./public"
 
-      - name: Deploy to Github Pages
+      - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
