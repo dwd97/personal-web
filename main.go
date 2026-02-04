@@ -69,6 +69,13 @@ func parseHeader(line string) (int, string, bool) {
 }
 
 func main() {
+	outputDir := "public"
+
+	os.RemoveAll(outputDir)
+	if err := os.MkdirAll(outputDir + "/posts", 0755); err != nil {
+		panic(err)
+	}
+
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
