@@ -2,39 +2,41 @@ name: build-and-deploy-site
 
 on:
   push:
-    branches:
-      - main
-  workflow_dispatch:
+    branches: ["main"]
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: "1.22"
+          go-version: "1.25.x"
 
       - name: Install dependencies
         run: go mod download
 
-      - name: Generate static site
-        run: go run ./cmd/blog
+      - name: Build Site
+        run: go run .cmd/blog/main.go
 
       - name: Verify public output
         run: |
           echo "Generated files:"
           ls -R public
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
-          publish_branch: gh-pages
+          path: "./public"
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
