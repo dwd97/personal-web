@@ -11,6 +11,7 @@ import (
 
 	"github.com/chasefleming/elem-go"
 	"github.com/yuin/goldmark"
+	"github.com/yuin/goldmark/extension"
 )
 
 const (
@@ -75,7 +76,11 @@ func slugify(s string) string {
 
 func markdownToHTML(content string) string {
 	var buf bytes.Buffer
-	md := goldmark.New()
+	md := goldmark.New(
+		goldmark.WithExtensions(
+			extension.GFM, // enables tables, strikethrough, task lists, etc.
+		),
+	)
 	if err := md.Convert([]byte(content), &buf); err != nil {
 		log.Fatal(err)
 	}
