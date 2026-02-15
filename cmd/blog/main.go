@@ -105,16 +105,6 @@ func readMarkdownPosts(dir string) []string {
 	return posts
 }
 
-func generatePostListHTML(postFilenames []string) string {
-	var items strings.Builder
-
-	for _, filename := range postFilenames {
-		items.WriteString(`<li><a href="public/` + filename + `">` + filename + `</a></li>` + "\n")
-	}
-
-	return items.String()
-}
-
 func createDirIfNotExist(dir string) {
 	if _, err := os.Stat(dir); os.IsNotExist(err) {
 		err := os.Mkdir(dir, 0755) // or 0700 if you need it to be private
@@ -147,6 +137,18 @@ func copyDir(src, dst string) {
 	})
 }
 
+func copyFile(src, dst string) {
+	data, err := os.ReadFile(src)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = os.WriteFile(dst, data, 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
 func generateHome(posts []string) {
 	templateBytes, err := os.ReadFile(indexTpl)
 	if err != nil {
@@ -156,7 +158,7 @@ func generateHome(posts []string) {
 	var items strings.Builder
 
 	for _, p := range posts {
-		items.WriteString(`<li><a href="posts/` + p + `">` + p + `</a></li>\n`)
+		items.WriteString(`<li><a href="posts/` + p + `">` + p + `</a></li>`)
 	}
 
 	finalHTML := strings.Replace(
@@ -181,4 +183,6 @@ func main() {
 	copyDir(staticDir, publicDir)
 
 	generateHome(posts)
+
+	copyFile("CNAME", filepath.Join(publicDir, "CNAME"))
 }
