@@ -2,10 +2,15 @@
 
 I believe that everyone should at least try to have a blog or an online presence of some kind to express himself on the internet. It's the best place to network or share ideas. That's why I decided to create my personal website [davidkrejci.dev](https://www.davidkrejci.dev) and implement a blog using Go and MD. In this post I will just share how to create a simple blog.
 
+With Katex support: $E=mc^2$ or
+
+$$
+\int_a^b f(x)\,dx
+$$
+
 I will be using these libraries:
 
 - [goldmark](https://github.com/yuin/goldmark)
-- [elem-go](https://github.com/chasefleming/elem-go)
 
 > I will use Github Pages for deployment and Github Actions workflow for automatic website generation
 
