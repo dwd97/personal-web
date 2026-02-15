@@ -2,7 +2,9 @@
 
 I believe that everyone should at least try to have a blog or an online presence of some kind to express himself on the internet. It's the best place to network or share ideas. That's why I decided to create my personal website [davidkrejci.dev](https://www.davidkrejci.dev) and implement a blog using Go and MD. In this post I will just share how to create a simple blog.
 
-With Katex support: (inline): $E=mc^2$
+Also I will help you add `robots.txt` and `sitemap.xml`, which help search engines to index your pages. As well as adding `frontmatter` for SEO.
+
+With Katex support: (inline): $e^{i\pi} + 1 = 0$
 
 (block):
 
@@ -27,7 +29,7 @@ personal-web/
 │   └─ blog/
 │       └─ main.go          # main Go file for blog generation
 ├─ templates/               # HTML templates
-│   ├─ base.html
+│   ├─ base.html            # will be the root for all of your other pages
 │   ├─ post.html
 │   ├─ page.html
 │   └─ index.html
@@ -65,3 +67,31 @@ personal-web/
 3. In Github pages select `Deploy from branch`
 
 ## Creating the template files
+
+> base.html:
+
+- basic template for an HTML5 page. Can be created in VS Code by typing ! and clicking Enter.
+- The {{...}} is going to be used inside the `main.go` for injecting that part of the website with dynamic content on deploy. Though it is still a static website.
+
+```html
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <title>{{TITLE}}</title>
+  </head>
+  <body>
+    <nav>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/about/">About</a>
+        <a href="/contact/">Contact</a>
+      </nav>
+    </nav>
+    <main>{{CONTENT}}</main>
+    <footer></footer>
+  </body>
+</html>
+```
