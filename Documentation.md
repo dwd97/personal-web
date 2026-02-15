@@ -17,7 +17,7 @@ personal-web/
 │   ├─ site/                # site builder (routing, pages)
 │   └─ fs/                  # file loading utilities
 ├─ templates/               # HTML templates
-│   ├─ base.html
+│   ├─ base.html            # every page is rendered inside this html page
 │   ├─ post.html
 │   ├─ page.html
 │   └─ index.html
@@ -29,6 +29,7 @@ personal-web/
 │       └─ contact.md
 ├─ static/                 # copied as-is
 │   ├─ css/
+│       └─ style.css
 │   ├─ images/
 │   └─ fonts/
 ├─ public/                 # GENERATED output (deploy this)

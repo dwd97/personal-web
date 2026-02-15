@@ -9,7 +9,6 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/chasefleming/elem-go"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/extension"
 )
@@ -31,6 +30,30 @@ func prepareOutputDirs() {
 	createDirIfNotExist(filepath.Join(publicDir, "notes"))
 }
 
+func renderTemplate(path string, data map[string]string) string {
+	tpl, err := os.ReadFile(path)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	html := string(tpl)
+
+	for k, v := range data {
+		html = strings.ReplaceAll(html, "{{"+k+"}}", v)
+	}
+
+	return html
+}
+
+func renderWithBase(title, inner string) string {
+	base := renderTemplate("templates/base.html", map[string]string{
+		"TITLE":   title,
+		"CONTENT": inner,
+	})
+	return base
+}
+
+/*
 func layout(title string, content elem.Node) string {
 	htmlPage := elem.Html(nil,
 		elem.Head(nil, elem.Title(nil, elem.Text(title)),
@@ -50,6 +73,30 @@ func createHTMLPage(title, content string) string {
 	}
 
 	return filename
+}
+*/
+
+func createPost(title string, md string) string {
+	htmlContent := markdownToHTML(md)
+
+	postInner := renderTemplate("templates/post.html", map[string]string{
+		"TITLE":   title,
+		"DATE":    "",
+		"CONTENT": htmlContent,
+	})
+
+	full := renderWithBase(title, postInner)
+
+	slug := slugify(title)
+	outputDir := filepath.Join(publicDir, "posts", slug)
+	createDirIfNotExist(outputDir)
+
+	err := os.WriteFile(filepath.Join(outputDir, "index.html"), []byte(full), 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return slug
 }
 
 func slugify(s string) string {
@@ -89,24 +136,25 @@ func markdownToHTML(content string) string {
 
 func readMarkdownPosts(dir string) []string {
 	var posts []string
-	err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
-		if !info.IsDir() {
-			content, err := os.ReadFile(path)
-			if err != nil {
-				return err
-			}
 
-			htmlContent := markdownToHTML(string(content))
-			title := strings.TrimSuffix(info.Name(), filepath.Ext(info.Name()))
-			postFilename := createHTMLPage(title, htmlContent)
-
-			posts = append(posts, postFilename)
+	filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
+		if err != nil || info == nil {
+			return err
 		}
+
+		if info.IsDir() || filepath.Ext(info.Name()) != ".md" {
+			return nil
+		}
+
+		content, _ := os.ReadFile(path)
+
+		title := strings.TrimSuffix(info.Name(), filepath.Ext(info.Name()))
+		slug := createPost(title, string(content))
+
+		posts = append(posts, slug)
 		return nil
 	})
-	if err != nil {
-		log.Fatal(err)
-	}
+
 	return posts
 }
 
@@ -155,28 +203,60 @@ func copyFile(src, dst string) {
 }
 
 func generateHome(posts []string) {
-	templateBytes, err := os.ReadFile(indexTpl)
+	indexInner := renderTemplate("templates/index.html", map[string]string{})
+
+	var list strings.Builder
+	for _, slug := range posts {
+		list.WriteString(`<li><a href="/posts/` + slug + `/">` + slug + `</a></li>`)
+	}
+
+	indexInner = strings.Replace(indexInner, "{{BLOG_POSTS}}", list.String(), 1)
+
+	final := renderWithBase("Home", indexInner)
+
+	err := os.WriteFile(filepath.Join(publicDir, "index.html"), []byte(final), 0644)
 	if err != nil {
 		log.Fatal(err)
 	}
+}
 
-	var items strings.Builder
+func createPage(title string, md string) {
+	htmlContent := markdownToHTML(md)
 
-	for _, p := range posts {
-		items.WriteString(`<li><a href="posts/` + p + `">` + p + `</a></li>`)
-	}
+	pageInner := renderTemplate("templates/page.html", map[string]string{
+		"TITLE":   title,
+		"CONTENT": htmlContent,
+	})
 
-	finalHTML := strings.Replace(
-		string(templateBytes),
-		"{{BLOG_POSTS}}",
-		items.String(),
-		1,
-	)
+	full := renderWithBase(title, pageInner)
 
-	err = os.WriteFile(filepath.Join(publicDir, "index.html"), []byte(finalHTML), 0644)
+	slug := slugify(title)
+	outputDir := filepath.Join(publicDir, slug)
+	createDirIfNotExist(outputDir)
+
+	err := os.WriteFile(filepath.Join(outputDir, "index.html"), []byte(full), 0644)
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func readPages(dir string) {
+	filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
+		if err != nil || info == nil {
+			return err
+		}
+
+		if info.IsDir() || filepath.Ext(info.Name()) != ".md" {
+			return nil
+		}
+
+		content, _ := os.ReadFile(path)
+
+		title := strings.TrimSuffix(info.Name(), filepath.Ext(info.Name()))
+		createPage(title, string(content))
+
+		return nil
+	})
 }
 
 func main() {
@@ -184,10 +264,11 @@ func main() {
 
 	posts := readMarkdownPosts(postsDir)
 
+	readPages(pagesDir)
+
 	copyDir(notesDir, filepath.Join(publicDir, "notes"))
 	copyDir(staticDir, publicDir)
+	copyFile("CNAME", filepath.Join(publicDir, "CNAME"))
 
 	generateHome(posts)
-
-	copyFile("CNAME", filepath.Join(publicDir, "CNAME"))
 }
