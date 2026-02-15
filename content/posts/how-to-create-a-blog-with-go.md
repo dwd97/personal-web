@@ -2,9 +2,9 @@
 
 I believe that everyone should at least try to have a blog or an online presence of some kind to express himself on the internet. It's the best place to network or share ideas. That's why I decided to create my personal website [davidkrejci.dev](https://www.davidkrejci.dev) and implement a blog using Go and MD. In this post I will just share how to create a simple blog.
 
-With Katex support:
+With Katex support: (inline): $E=mc^2$
 
-$E=mc^2$
+(block):
 
 $$
 \int_a^b f(x)\,dx
