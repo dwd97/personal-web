@@ -598,3 +598,15 @@ tbody tr:hover {
     margin: 18px 0 8px;
   }
 }
+
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 0.5rem;
+  font-size: 1.25rem; /* 1.2–1.4 funguje nejlépe */
+  margin: 1.2rem 0;
+}
+
+.katex {
+  max-width: 100%;
+}
