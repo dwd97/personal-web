@@ -6,7 +6,7 @@
 
 Buď $A \in T^{nxn}$. Pak determinant matice $A$ je:
 
-$$ det(A) = \sum*{p \in S_n} sgn(p) \prod^{n}*{i=1}a\_{i, p(i)} $$
+$$ det(A) = \sum_{p \in S_n} sgn(p) \prod^{n}_{i=1}a_{i, p(i)} $$
 
 Značí se $det(A)$ nebo $|A|$
 
