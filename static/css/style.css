@@ -107,6 +107,9 @@ body {
 .site-header {
   background: var(--surface);
   border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 20;
 }
 
 .nav {
@@ -525,5 +528,18 @@ tbody tr:hover {
 
   pre {
     padding: 14px 16px;
+  }
+}
+
+@media (max-width: 720px) {
+  a,
+  button {
+    min-height: 40px;
+  }
+}
+
+@media (max-width: 720px) {
+  .container {
+    padding: 24px 16px;
   }
 }
