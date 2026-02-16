@@ -23,10 +23,14 @@ $$
 pro determinant matice řádu 2 $rank(A)=2$ platí:
 
 $$
-\det\begin{pmatrix}
-a_{11} & a_{12} \\
+\\det\\begin{pmatrix}
+a_{11} & a_{12} \\\\
 a_{21} & a_{22}
-\end{pmatrix}
+\\end{pmatrix}
+$$
+
+$$
+\det A = \det (A^T)
 $$
 
 ## Důkazy
