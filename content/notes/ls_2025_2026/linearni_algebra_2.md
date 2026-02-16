@@ -18,7 +18,7 @@ Zjednodušene to znamená, že dostanu sčítance přes všechny permutace z $p 
 
 Kde $S_n$ je grupa všech možných permutací na množině indexů $\{1,...,n\}$. Suma tedy iteruje přes všechny možné permutace.
 
-A znaménko: $\operatorname{sgn}(p) = (-1)^{\text{\#inverzi}}$
+A znaménko: $\operatorname{sgn}(p) = (-1)^{počet inverzí}$
 
 Lze zapsat také:
 
@@ -48,7 +48,6 @@ pro $p=(2,1)$ platí $\operatorname{sgn}p=-1$ a součin $\prod_{i=1}^{n} a_{i,p(
 Tedy determinant bude:
 
 $$
-\qquad
 \det A = \begin{vmatrix}
 a_{11} & a_{12} \\\\
 a_{21} & a_{22} 
