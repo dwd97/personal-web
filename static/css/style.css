@@ -469,6 +469,67 @@ tbody tr:hover {
   border-radius: 2px;
 }
 
+/* right-side controls */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* burger hidden on desktop */
+.menu-toggle {
+  display: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--text);
+  padding: 6px;
+  border-radius: 8px;
+}
+
+.menu-toggle:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* mobile layout */
+@media (max-width: 768px) {
+  .nav {
+    position: relative;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  /* dropdown menu */
+  .nav-links {
+    position: absolute;
+    top: 64px;
+    right: 16px;
+    left: 16px;
+
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 16px;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .nav-links a {
+    margin: 0;
+    font-size: 16px;
+  }
+}
+
 /* mobile layout */
 @media (max-width: 720px) {
   .nav {
