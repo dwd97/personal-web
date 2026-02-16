@@ -23,6 +23,16 @@
           "file": "uvod_do_linuxu.md",
           "title": "Úvod do Linuxu",
           "type": "md"
+        },
+        {
+          "file": "algoritmy_datove_struktury_1.md",
+          "title": "Algoritmy a datové struktury 1",
+          "type": "md"
+        },
+        {
+          "file": "programovani_2.md",
+          "title": "Programování 2 [C#]",
+          "type": "md"
         }
       ]
     },

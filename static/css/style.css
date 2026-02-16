@@ -613,3 +613,83 @@ tbody tr:hover {
   max-width: 100%;
   color: var(--math-text);
 }
+
+/* Clickable Image Container */
+.img-link {
+  display: block;
+  margin: 2rem 0;
+  cursor: zoom-in;
+  text-decoration: none !important;
+}
+
+.img-link img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.img-link:hover img {
+  transform: scale(1.01);
+  border-color: var(--accent);
+}
+
+.img-expand-link {
+  display: block;
+  margin: 2rem auto;
+  max-width: fit-content;
+  cursor: zoom-in;
+  cursor: zoom-in;
+}
+
+.img-expand-link img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  transition: transform 0.2s ease;
+}
+
+.img-expand-link:hover img {
+  transform: scale(1.02);
+  border-color: var(--accent);
+}
+
+/* Modal Background */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(5px);
+  justify-content: center;
+  align-items: center;
+}
+
+/* The Image inside the Modal */
+.modal-content {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 4px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  cursor: default;
+}
+
+/* Close Button */
+.close {
+  position: absolute;
+  top: 20px;
+  right: 35px;
+  color: #fff;
+  font-size: 40px;
+  font-weight: bold;
+  cursor: pointer;
+}

@@ -71,15 +71,28 @@ $$
 
 #### 1.2 Sarrusovo pravidlo
 
+Je to mnemotechnická pomůcka na výpočet determinantu matice řádu 3. Tedy $A \in T^{3x3}$
 
+![sarrusovo_pravidlo](/images/notes/linearni_algebra_2/sarrusovo_pravidlo.png)
 
-Platí také:
+Protože $S_3 = \\{ (1,2,3),(1,3,2),(2,1,3),(2,3,1),(3,1,2),(3,1,2),(3,2,1) \\}$ má 6 prvků, kde prvky $p=(1,2,3), (2,3,1) a (3,1,2)$ mají $\operatorname{sgn}p = +1$ a prvky $p=(1,3,2),(2,1,3),(3,2,1)$ mají $\operatorname{sgn}p=-1$
 
-$$
-\det A = \det (A^T)
-$$
+#### 1.3 Vlastnosti determinantu
+
+Má-li $A$ nulový řádek, pak $detA = 0$
+
+$\det A = \det (A^T)$ Determinant matice $A$ je roven determinantu transponované matice $A^T$ [důkaz](#důkazy)
+
+Pro trojúhelníkové (i diagonální) matice platí:
 
 ## Důkazy
+
+### 1. Determinanty
+
+#### $\det A = \det (A^T)$
+
+Pozorování: $\det A = \det (A^T)$
+Důkaz: 
 
 ## Příklady
 

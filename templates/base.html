@@ -256,5 +256,34 @@
         mobileMenu.classList.toggle("open");
       });
     </script>
+    <div id="imgModal" class="modal">
+      <span class="close">&times;</span>
+      <img class="modal-content" id="img01" />
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const modal = document.getElementById("imgModal");
+        const modalImg = document.getElementById("img01");
+
+        // Global listener for clicks on expandable images
+        document.addEventListener("click", function (e) {
+          const link = e.target.closest(".img-expand-link");
+          if (link) {
+            e.preventDefault(); // Stop from opening in new tab
+            modal.style.display = "flex";
+            // Use the link's href (the high-res original) for the modal
+            modalImg.src = link.getAttribute("href");
+          }
+        });
+
+        // Close when clicking the 'X' or anywhere outside the image
+        modal.onclick = function (e) {
+          if (e.target !== modalImg) {
+            modal.style.display = "none";
+          }
+        };
+      });
+    </script>
   </body>
 </html>

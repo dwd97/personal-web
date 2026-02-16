@@ -6,6 +6,7 @@ import (
 	stdhtml "html"
 	"log"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"regexp"
 	"strconv"
@@ -50,6 +51,35 @@ func renderTemplate(path string, data map[string]string) string {
 	}
 
 	return html
+}
+
+type ImageLinkRenderer struct{}
+
+func (r *ImageLinkRenderer) RegisterFuncs(reg renderer.NodeRendererFuncRegisterer) {
+	reg.Register(ast.KindImage, r.renderImageWithLink)
+}
+
+func (r *ImageLinkRenderer) renderImageWithLink(w util.BufWriter, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
+	if !entering {
+		return ast.WalkContinue, nil
+	}
+
+	n := node.(*ast.Image)
+	src := string(n.Destination)
+
+	// Create the WebP path
+	ext := filepath.Ext(src)
+	webpSrc := strings.TrimSuffix(src, ext) + ".webp"
+
+	w.WriteString(`<a href="` + src + `" class="img-expand-link">`)
+	w.WriteString(`<picture>`)
+	// The browser will try webp first, but fall back to the png/jpg immediately if it fails
+	w.WriteString(`<source srcset="` + webpSrc + `" type="image/webp">`)
+	w.WriteString(`<img src="` + src + `" alt="` + string(n.Title) + `" loading="lazy" onerror="this.parentElement.querySelector('source').remove();">`)
+	w.WriteString(`</picture>`)
+	w.WriteString(`</a>`)
+
+	return ast.WalkSkipChildren, nil
 }
 
 type CodeBlockRenderer struct{}
@@ -394,24 +424,46 @@ func slugify(s string) string {
 
 func markdownToHTML(content string) string {
 	var buf bytes.Buffer
-
 	md := goldmark.New(
-		goldmark.WithExtensions(
-			extension.GFM,
-		),
+		goldmark.WithExtensions(extension.GFM),
 		goldmark.WithRendererOptions(
-			// Use the 'renderer' package here, not 'html'
 			renderer.WithNodeRenderers(
 				util.Prioritized(&CodeBlockRenderer{}, 100),
+				util.Prioritized(&ImageLinkRenderer{}, 99), // Add this line
 			),
 		),
 	)
-
 	if err := md.Convert([]byte(content), &buf); err != nil {
 		log.Fatal(err)
 	}
-
 	return buf.String()
+}
+
+func optimizeStaticImages(root string) {
+	_, err := exec.LookPath("ffmpeg")
+	if err != nil {
+		log.Println("Skipping optimization: ffmpeg not found")
+		return
+	}
+
+	filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+		if err != nil || info.IsDir() {
+			return err
+		}
+
+		ext := strings.ToLower(filepath.Ext(path))
+		if ext == ".jpg" || ext == ".png" || ext == ".jpeg" {
+			// Generate both modern formats
+			webpPath := strings.TrimSuffix(path, ext) + ".webp"
+
+			// 2. Optimize to WebP (Will work in GitHub Actions)
+			if _, err := os.Stat(webpPath); os.IsNotExist(err) {
+				cmd := exec.Command("ffmpeg", "-y", "-i", path, "-q:v", "75", webpPath)
+				_ = cmd.Run() // Might fail locally but that's okay!
+			}
+		}
+		return nil
+	})
 }
 
 func readMarkdownPosts(dir string) []string {
@@ -537,6 +589,9 @@ func readPages(dir string) {
 
 func main() {
 	prepareOutputDirs()
+
+	// Optimize images in the static/images folder before processing posts
+	optimizeStaticImages("static/images")
 
 	posts := readMarkdownPosts(postsDir)
 	readPages(pagesDir)
