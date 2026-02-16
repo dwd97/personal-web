@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"log"
 	"os"
 	"path/filepath"
@@ -53,28 +54,120 @@ func renderWithBase(title, inner string) string {
 	return base
 }
 
-/*
-func layout(title string, content elem.Node) string {
-	htmlPage := elem.Html(nil,
-		elem.Head(nil, elem.Title(nil, elem.Text(title)),
-			elem.Body(nil, elem.Header(nil, elem.H1(nil, elem.Text(title))), elem.Main(nil, content), elem.Footer(nil, elem.Text("Footer content here")))))
-	return htmlPage.Render()
+type NoteItem struct {
+	Title string
+	URL   string
 }
 
-func createHTMLPage(title, content string) string {
-	htmlOutput := layout(title, elem.Raw(content))
+type NoteSection struct {
+	Name  string
+	Items []NoteItem
+}
 
-	filename := slugify(title) + ".html"
-	filePath := filepath.Join(publicDir, "posts", filename)
+type NotesConfig struct {
+	Sections []NotesSection `json:"sections"`
+}
 
-	err := os.WriteFile(filePath, []byte(htmlOutput), 0644)
+type NotesSection struct {
+	ID    string      `json:"id"`
+	Title string      `json:"title"`
+	Items []NotesItem `json:"items"`
+}
+
+type NotesItem struct {
+	File  string `json:"file"`
+	Title string `json:"title"`
+	Type  string `json:"type"` // "md" | "pdf" | "link"
+	URL   string `json:"url"`
+}
+
+func loadNotesConfig() NotesConfig {
+	data, err := os.ReadFile("content/notes/notes.json")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	return filename
+	var cfg NotesConfig
+	if err := json.Unmarshal(data, &cfg); err != nil {
+		log.Fatal(err)
+	}
+
+	return cfg
 }
-*/
+func processNotesFromConfig(cfg NotesConfig) []NoteSection {
+	var sections []NoteSection
+
+	for _, s := range cfg.Sections {
+		sec := NoteSection{Name: s.Title}
+
+		for _, item := range s.Items {
+			src := filepath.Join(notesDir, s.ID, item.File)
+
+			switch item.Type {
+			case "md":
+				content, _ := os.ReadFile(src)
+				url := createNotePage(
+					filepath.Join(s.ID, item.File),
+					item.Title,
+					string(content),
+				)
+				sec.Items = append(sec.Items, NoteItem{Title: item.Title + " (MD)", URL: url})
+
+			case "pdf":
+				dst := filepath.Join(publicDir, "notes", s.ID, item.File)
+				createDirIfNotExist(filepath.Dir(dst))
+				copyFile(src, dst)
+
+				url := "/notes/" + s.ID + "/" + item.File
+				sec.Items = append(sec.Items, NoteItem{Title: item.Title + " (PDF)", URL: url})
+			case "link":
+				sec.Items = append(sec.Items, NoteItem{Title: item.Title, URL: item.URL})
+			}
+		}
+
+		sections = append(sections, sec)
+	}
+
+	return sections
+}
+
+func renderNotes(sections []NoteSection) string {
+	var b strings.Builder
+
+	b.WriteString("<h2>Zápisky MFF UK</h2>")
+
+	for _, s := range sections {
+		b.WriteString("<h3>" + s.Name + "</h3><ul>")
+		for _, item := range s.Items {
+			b.WriteString(`<li><a href="` + item.URL + `">` +
+				item.Title + `</a></li>`)
+		}
+		b.WriteString("</ul>")
+	}
+
+	return b.String()
+}
+
+func createNotePage(relPath, title, md string) string {
+	htmlContent := markdownToHTML(md)
+
+	noteInner := renderTemplate("templates/page.html", map[string]string{
+		"TITLE":   title,
+		"CONTENT": htmlContent,
+	})
+
+	full := renderWithBase(title, noteInner)
+
+	outDir := filepath.Join(publicDir, "notes",
+		strings.TrimSuffix(relPath, filepath.Ext(relPath)))
+
+	createDirIfNotExist(outDir)
+
+	os.WriteFile(filepath.Join(outDir, "index.html"), []byte(full), 0644)
+
+	return "/notes/" + filepath.ToSlash(
+		strings.TrimSuffix(relPath, filepath.Ext(relPath))) + "/"
+}
 
 func createPost(title string, md string) string {
 	htmlContent := markdownToHTML(md)
@@ -159,11 +252,9 @@ func readMarkdownPosts(dir string) []string {
 }
 
 func createDirIfNotExist(dir string) {
-	if _, err := os.Stat(dir); os.IsNotExist(err) {
-		err := os.Mkdir(dir, 0755) // or 0700 if you need it to be private
-		if err != nil {
-			log.Fatal(err)
-		}
+	err := os.MkdirAll(dir, 0755)
+	if err != nil {
+		log.Fatal(err)
 	}
 }
 
@@ -202,7 +293,7 @@ func copyFile(src, dst string) {
 	}
 }
 
-func generateHome(posts []string) {
+func generateHome(posts []string, notes []NoteSection) {
 	indexInner := renderTemplate("templates/index.html", map[string]string{})
 
 	var list strings.Builder
@@ -211,13 +302,11 @@ func generateHome(posts []string) {
 	}
 
 	indexInner = strings.Replace(indexInner, "{{BLOG_POSTS}}", list.String(), 1)
+	indexInner = strings.Replace(indexInner, "{{NOTES}}", renderNotes(notes), 1)
 
 	final := renderWithBase("Home", indexInner)
 
-	err := os.WriteFile(filepath.Join(publicDir, "index.html"), []byte(final), 0644)
-	if err != nil {
-		log.Fatal(err)
-	}
+	os.WriteFile(filepath.Join(publicDir, "index.html"), []byte(final), 0644)
 }
 
 func createPage(title string, md string) {
@@ -263,12 +352,13 @@ func main() {
 	prepareOutputDirs()
 
 	posts := readMarkdownPosts(postsDir)
-
 	readPages(pagesDir)
 
-	copyDir(notesDir, filepath.Join(publicDir, "notes"))
+	cfg := loadNotesConfig()
+	notes := processNotesFromConfig(cfg)
+
 	copyDir(staticDir, publicDir)
 	copyFile("CNAME", filepath.Join(publicDir, "CNAME"))
 
-	generateHome(posts)
+	generateHome(posts, notes)
 }

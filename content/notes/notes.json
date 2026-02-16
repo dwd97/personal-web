@@ -1,0 +1,66 @@
+{
+  "sections": [
+    {
+      "id": "ls_2025_2026",
+      "title": "Letní semestr 2025/26",
+      "items": [
+        {
+          "file": "linearni_algebra_2_md.md",
+          "title": "Lineární algebra 2",
+          "type": "md"
+        },
+        {
+          "file": "matematicka_analyza_1_md.md",
+          "title": "Matematická analýza 1",
+          "type": "md"
+        },
+        {
+          "file": "pocitacove_systemy_md.md",
+          "title": "Počítačové systémy",
+          "type": "md"
+        },
+        {
+          "file": "uvod_do_linuxu.md",
+          "title": "Úvod do Linuxu",
+          "type": "md"
+        }
+      ]
+    },
+    {
+      "id": "zs_2025_2026",
+      "title": "Zimní semestr 2025/26",
+      "items": [
+        {
+          "file": "algoritmizace.pdf",
+          "title": "Algoritmizace",
+          "type": "pdf"
+        },
+        {
+          "file": "diskretni_matematika.pdf",
+          "title": "Diskrétní matematika",
+          "type": "pdf"
+        },
+        {
+          "file": "linearni_algebra_1.pdf",
+          "title": "Lineární algebra 1",
+          "type": "pdf"
+        },
+        {
+          "file": "principy.pdf",
+          "title": "Principy počítačů",
+          "type": "pdf"
+        },
+        {
+          "file": "uvod_do_siti.pdf",
+          "title": "Úvod do sítí",
+          "type": "pdf"
+        },
+        {
+          "title": "Minesweeper (Python)",
+          "type": "link",
+          "url": "https://github.com/dwd97/minesweeper_pygame"
+        }
+      ]
+    }
+  ]
+}

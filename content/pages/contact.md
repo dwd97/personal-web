@@ -1,3 +1,3 @@
 # Contact
 
-Just e-mail me: [admin@davidkrejci.dev](mailto:admin@davidkrejci.dev)
+Just e-mail me: [email@davidkrejci.dev](mailto:email@davidkrejci.dev)

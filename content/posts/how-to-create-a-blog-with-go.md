@@ -37,8 +37,7 @@ personal-web/
 │   └─ posts/
 ├─ static/                  # will be copied over to public/
 │   ├─ css/
-│   ├─ images/
-│   └─ fonts/
+│   └─ images/
 ├─ public/                  # Generated output by main.go - will be done by Github Actions
 │   ├─ index.html
 │   ├─ posts/
