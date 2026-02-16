@@ -1,6 +1,16 @@
 ## Teorie - bez důkazů
 
-### Determinanty
+### 1. Determinanty
+
+#### 1.1 Definice determinantu
+
+Buď $A \in T^{nxn}$. Pak determinant matice $A$ je:
+
+$$
+det(A) = \sum_{p \in S_n} sgn(p) \prod^{n}_{i=1}a_{i, p(i)}
+$$
+
+Značí se $det(A)$ nebo $|A|$
 
 ## Důkazy
 

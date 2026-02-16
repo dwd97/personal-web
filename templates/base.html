@@ -133,7 +133,7 @@
     <header class="site-header">
       <div class="container">
         <nav class="nav">
-          <a class="logo" href="/">Personal-Web</a>
+          <a class="logo" href="/">davidkrejci.dev</a>
 
           <div class="nav-actions">
             <button id="menu-toggle" class="menu-toggle" aria-label="Open menu">
@@ -153,39 +153,43 @@
               class="theme-toggle"
               aria-label="Toggle dark mode"
             >
-              <!-- moon -->
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                class="bi bi-moon"
-                viewBox="0 0 16 16"
-              >
+              <!-- MOON — bold, centered, visible at small sizes -->
+              <svg id="icon-moon" viewBox="0 0 24 24" width="20" height="20">
                 <path
-                  d="M6 .278a.77.77 0 0 1 .08.858 7.2 7.2 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277q.792-.001 1.533-.16a.79.79 0 0 1 .81.316.73.73 0 0 1-.031.893A8.35 8.35 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.75.75 0 0 1 6 .278M4.858 1.311A7.27 7.27 0 0 0 1.025 7.71c0 4.02 3.279 7.276 7.319 7.276a7.32 7.32 0 0 0 5.205-2.162q-.506.063-1.029.063c-4.61 0-8.343-3.714-8.343-8.29 0-1.167.242-2.278.681-3.286"
+                  d="M21 12.5A8.5 8.5 0 1 1 11.5 3
+         6.5 6.5 0 1 0 21 12.5z"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
                 />
               </svg>
 
-              <!-- sun -->
+              <!-- SUN — same visual weight -->
               <svg id="icon-sun" viewBox="0 0 24 24" width="20" height="20">
                 <circle
                   cx="12"
                   cy="12"
-                  r="4"
+                  r="4.5"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
+                  stroke-width="2.6"
                 />
-                <path
-                  d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41
-         M17.66 17.66l1.41 1.41M2 12h2M20 12h2
-         M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
-                  fill="none"
+                <g
                   stroke="currentColor"
-                  stroke-width="2"
+                  stroke-width="2.2"
                   stroke-linecap="round"
-                />
+                >
+                  <line x1="12" y1="2.5" x2="12" y2="5.5" />
+                  <line x1="12" y1="18.5" x2="12" y2="21.5" />
+                  <line x1="2.5" y1="12" x2="5.5" y2="12" />
+                  <line x1="18.5" y1="12" x2="21.5" y2="12" />
+                  <line x1="5.2" y1="5.2" x2="7.4" y2="7.4" />
+                  <line x1="16.6" y1="16.6" x2="18.8" y2="18.8" />
+                  <line x1="5.2" y1="18.8" x2="7.4" y2="16.6" />
+                  <line x1="16.6" y1="7.4" x2="18.8" y2="5.2" />
+                </g>
               </svg>
             </button>
           </div>
