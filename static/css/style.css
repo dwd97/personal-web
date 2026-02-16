@@ -610,3 +610,15 @@ tbody tr:hover {
 .katex {
   max-width: 100%;
 }
+
+p + .katex-display {
+  margin-top: 1.6rem;
+}
+
+.katex-display + p {
+  margin-top: 1.4rem;
+}
+
+.katex {
+  font-weight: 500;
+}
