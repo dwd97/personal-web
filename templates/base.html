@@ -134,6 +134,13 @@
       <div class="container">
         <nav class="nav">
           <a class="logo" href="/">Personal-Web</a>
+          <button class="menu-toggle" aria-label="Open menu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+
+          <!-- navigation links -->
           <div class="nav-links">
             <a href="/">Home</a>
             <a href="/about/">About</a>
@@ -221,9 +228,14 @@
       });
 
       initTheme();
+    </script>
+    <script>
+      // mobile menu toggle
+      const menuBtn = document.querySelector(".menu-toggle");
+      const navLinks = document.querySelector(".nav-links");
 
-      document.querySelector(".menu-toggle").addEventListener("click", () => {
-        document.querySelector(".nav-links").classList.toggle("open");
+      menuBtn.addEventListener("click", () => {
+        navLinks.classList.toggle("open");
       });
     </script>
   </body>
