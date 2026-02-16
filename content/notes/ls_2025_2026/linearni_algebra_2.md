@@ -37,11 +37,13 @@ $$
 
 protože $|S_n| = 2$, nebo-li $S_2 = \{(1,2),(2,1)\}$
 
-$$
-\text{pro} p=(1,2) \text{ máme } \operatorname{sgn}p=+1
-\quad \text{a} \quad
-\prod_{i=1}^{n} a_{i,p(i)} = a_{11}a_{22}
-$$
+1. identita
+
+pro $p=(1,2)$ platí $\operatorname{sgn}p=+1$ $\prod_{i=1}^{n} a_{i,p(i)} = a_{11}a_{22}$
+
+2. #inverzí = 1
+
+pro $p=(2,1)$ platí $\operatorname{sgn}p=-1$ $\prod_{i=1}^{n} a_{i,p(i)} = - a_{12}a_{21}$
 
 Exaktní odvození lze získat z vyjádření neznámé obecně metodou sčítací, dosazovací. Pro dvě rovnice: $x_1$ a $x_2$. Pro tři rovnice pak $x_1$, $x_2$ a $x_3$.
 
