@@ -89,9 +89,10 @@ Pro trojúhelníkové (i diagonální) matice platí:
 
 ### 1. Determinanty
 
-#### $\det A = \det (A^T)$
+#### determinant matice je roven determinantu transpozice matice
 
 Pozorování: $\det A = \det (A^T)$
+
 Důkaz: 
 
 ## Příklady
