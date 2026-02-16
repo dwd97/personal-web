@@ -10,6 +10,7 @@
   --muted: #64748b;
   --border: #e5e7eb;
   --accent: #0076ad;
+  --math-text: #0d55b9;
 
   --code-bg: #f6f8fb; /* subtle blue-gray */
   --code-header-bg: rgba(0, 0, 0, 0.03);
@@ -27,6 +28,7 @@
   --muted: #9ca3af;
   --border: #1f2937;
   --accent: #0b92cc;
+  --math-text: #7cc4ff;
 
   --code-bg: #0f172a;
   --code-text: #e6edf3;
@@ -602,23 +604,12 @@ tbody tr:hover {
 .katex-display {
   overflow-x: auto;
   overflow-y: hidden;
-  padding-bottom: 0.5rem;
+  padding: 15px;
   font-size: 1.25rem; /* 1.2–1.4 funguje nejlépe */
-  margin: 1.2rem 0;
+  margin: 25px 0;
 }
 
 .katex {
   max-width: 100%;
-}
-
-p + .katex-display {
-  margin-top: 1.6rem;
-}
-
-.katex-display + p {
-  margin-top: 1.4rem;
-}
-
-.katex {
-  font-weight: 500;
+  color: var(--math-text);
 }
