@@ -11,8 +11,8 @@
   --border: #e5e7eb;
   --accent: #0ea5e9;
 
-  --code-bg: #f6f8fb; /* subtle blue-gray */
-  --code-header-bg: #eef2f7; /* clearer separation */
+  --code-bg: #f6f8fb;
+  --code-text: #0f172a;
   --code-header-bg: rgba(0, 0, 0, 0.03);
   --code-header-text: #475569;
 
@@ -42,38 +42,9 @@
    BASE
 ========================= */
 
-#icon-sun {
-  display: none;
-}
-#icon-moon {
-  display: block;
-}
-
-[data-theme="dark"] #icon-sun {
-  display: block;
-}
-[data-theme="dark"] #icon-moon {
-  display: none;
-}
-
-.theme-toggle {
-  margin-left: 18px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  cursor: pointer;
-  color: var(--muted);
-  padding: 7px;
-  border-radius: 10px;
-  transition: all 0.15s ease;
-}
-
-.theme-toggle:hover {
-  color: var(--text);
-  border-color: var(--accent);
-}
-
 html {
   background: var(--bg);
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -88,6 +59,24 @@ body {
   background: var(--bg);
   color: var(--text);
   line-height: 1.7;
+}
+
+/* =========================
+   ICON SWITCH
+========================= */
+
+#icon-sun {
+  display: none;
+}
+#icon-moon {
+  display: block;
+}
+
+[data-theme="dark"] #icon-sun {
+  display: block;
+}
+[data-theme="dark"] #icon-moon {
+  display: none;
 }
 
 /* =========================
@@ -114,8 +103,8 @@ body {
 
 .nav {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 12px;
 }
 
 .logo {
@@ -123,6 +112,18 @@ body {
   font-size: 18px;
   text-decoration: none;
   color: var(--text);
+}
+
+/* push actions right */
+.nav-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-links {
+  display: flex;
 }
 
 .nav-links a {
@@ -136,6 +137,41 @@ body {
   color: var(--text);
 }
 
+/* theme toggle */
+.theme-toggle {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  color: var(--muted);
+  padding: 7px;
+  border-radius: 10px;
+  transition: all 0.15s ease;
+}
+
+.theme-toggle:hover {
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+/* burger */
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+}
+
+.menu-toggle span {
+  width: 22px;
+  height: 2px;
+  background: var(--text);
+  display: block;
+  border-radius: 2px;
+}
+
 /* =========================
    TYPOGRAPHY
 ========================= */
@@ -145,10 +181,12 @@ h1 {
   line-height: 1.2;
   margin: 42px 0 16px;
 }
+
 h2 {
   font-size: 28px;
   margin: 36px 0 14px;
 }
+
 h3 {
   font-size: 22px;
   margin: 28px 0 10px;
@@ -178,7 +216,6 @@ a:hover {
    CODE
 ========================= */
 
-/* inline */
 code {
   font-family: "JetBrains Mono", monospace;
   font-size: 0.92em;
@@ -187,19 +224,12 @@ code {
   border-radius: 6px;
 }
 
-/* container */
 .code-block {
   margin: 40px 0;
   border-radius: 16px;
   overflow: hidden;
   background: var(--code-bg);
   border: 1px solid var(--border);
-}
-
-/* NEW: scrolling happens here */
-.code-scroll {
-  overflow-x: auto;
-  padding-bottom: 14px; /* distance from code to scrollbar */
 }
 
 /* header */
@@ -214,48 +244,29 @@ code {
   border-bottom: 1px solid var(--border);
 }
 
+/* scrolling wrapper */
 .code-scroll {
   overflow-x: auto;
-  padding: 0; /* space above scrollbar */
+  overflow-y: hidden;
+  padding-bottom: 14px;
 }
 
-/* create extra space at the far right when fully scrolled */
-.code-scroll pre code {
-  padding-right: 22px;
-  display: inline-block;
-  min-width: calc(100% - 44px);
-}
-
-/* highlight.js override */
-.code-scroll pre code.hljs {
-  padding-right: 22px !important;
-}
-
-.code-header::before {
-  content: "";
-  width: 6px;
-  height: 100%;
-  background: var(--accent);
-  margin-right: 10px;
-  border-radius: 6px 0 0 6px;
-}
-
-/* REMOVE padding inside block */
-pre {
+/* keep pre static */
+.code-scroll pre {
+  margin: 0;
   padding: 18px 22px;
-  background: transparent;
   overflow: visible !important;
 }
 
-/* highlight.js injects padding → override */
+/* highlight.js */
 pre code.hljs {
-  display: block;
-  padding: 0 !important;
-  margin: 0 !important;
+  display: inline-block;
+  min-width: 100%;
+  padding-right: 22px !important;
   background: transparent !important;
 }
 
-/* real code text */
+/* code text */
 pre code {
   font-family: "JetBrains Mono", monospace;
   font-size: 14px;
@@ -270,10 +281,6 @@ pre code {
   color: var(--code-text);
 }
 
-[data-theme="dark"] .hljs {
-  color: #e6edf3;
-}
-
 [data-theme="dark"] .code-block {
   background: #0f172a;
   border: 1px solid rgba(255, 255, 255, 0.06);
@@ -283,10 +290,7 @@ pre code {
   background: rgba(255, 255, 255, 0.04);
 }
 
-/* =========================
-   COPY BUTTON
-========================= */
-
+/* copy button */
 .copy-btn {
   display: inline-flex;
   align-items: center;
@@ -299,37 +303,9 @@ pre code {
   cursor: pointer;
   font-size: 12px;
 }
+
 .copy-btn:hover {
   background: rgba(0, 0, 0, 0.06);
-}
-
-/* =========================
-   DARK TOGGLE
-========================= */
-
-.theme-toggle {
-  margin-left: 18px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  color: var(--muted);
-  padding: 6px;
-  border-radius: 6px;
-}
-.theme-toggle:hover {
-  background: rgba(0, 0, 0, 0.05);
-}
-
-/* =========================
-   BLOCKQUOTE
-========================= */
-
-blockquote {
-  margin: 28px 0;
-  padding: 14px 18px;
-  border-left: 4px solid var(--border);
-  background: var(--quote-bg);
-  color: var(--text);
 }
 
 /* =========================
@@ -347,12 +323,7 @@ thead {
   background: var(--table-head-bg);
 }
 
-th {
-  text-align: left;
-  font-weight: 600;
-  padding: 12px 14px;
-}
-
+th,
 td {
   padding: 12px 14px;
 }
@@ -371,6 +342,7 @@ tbody tr:hover {
 
 .table-wrapper {
   overflow-x: auto;
+  overflow-y: hidden;
   margin: 28px 0;
   border-radius: 14px;
   background: var(--surface);
@@ -379,55 +351,21 @@ tbody tr:hover {
 }
 
 .table-wrapper table {
-  margin: 0;
   min-width: 640px;
-  border-collapse: collapse;
-  width: 100%;
 }
 
 /* =========================
-   FOOTER
+   SCROLLBARS
 ========================= */
 
-.footer {
-  margin-top: 60px;
-  color: var(--muted);
-  font-size: 14px;
-}
-
-/*scrollbar*/
-
-/* scrolling containers */
 .code-scroll,
 .table-wrapper {
-  overflow-x: auto;
-  overflow-y: hidden;
-
-  padding-bottom: 14px; /* distance from content to scrollbar */
+  scrollbar-gutter: stable;
 }
 
-/* pre must not scroll */
-.code-scroll pre {
-  overflow: visible !important;
-  margin: 0;
-}
-
-/* highlight.js override */
-.code-scroll pre code.hljs {
-  overflow: visible !important;
-  display: inline-block;
-  min-width: 100%;
-}
-
-/* identical scrollbar styling */
 .code-scroll::-webkit-scrollbar,
 .table-wrapper::-webkit-scrollbar {
   height: 14px;
-}
-
-.code-scroll::-webkit-scrollbar-track,
-.table-wrapper::-webkit-scrollbar-track {
-  background: transparent;
 }
 
 .code-scroll::-webkit-scrollbar-thumb,
@@ -444,79 +382,51 @@ tbody tr:hover {
 /* Firefox */
 .code-scroll,
 .table-wrapper {
-  scrollbar-width: auto; /* NOT '18px' */
+  scrollbar-width: auto;
+}
+
+/* =========================
+   BLOCKQUOTE
+========================= */
+
+blockquote {
+  margin: 28px 0;
+  padding: 14px 18px;
+  border-left: 4px solid var(--border);
+  background: var(--quote-bg);
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer {
+  margin-top: 60px;
+  color: var(--muted);
+  font-size: 14px;
 }
 
 /* =========================
    MOBILE NAV
 ========================= */
 
-.menu-toggle {
-  display: none;
-  flex-direction: column;
-  gap: 4px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 6px;
-}
-
-.menu-toggle span {
-  width: 22px;
-  height: 2px;
-  background: var(--text);
-  display: block;
-  border-radius: 2px;
-}
-
-/* right-side controls */
-.nav-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-/* burger hidden on desktop */
-.menu-toggle {
-  display: none;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  color: var(--text);
-  padding: 6px;
-  border-radius: 8px;
-}
-
-.menu-toggle:hover {
-  background: rgba(0, 0, 0, 0.05);
-}
-
-/* mobile layout */
 @media (max-width: 768px) {
-  .nav {
-    position: relative;
-  }
-
   .menu-toggle {
-    display: block;
+    display: flex;
   }
 
-  /* dropdown menu */
   .nav-links {
     position: absolute;
     top: 64px;
     right: 16px;
     left: 16px;
-
     display: none;
     flex-direction: column;
     gap: 12px;
-
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 14px;
     padding: 14px 16px;
-
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   }
 
@@ -530,73 +440,24 @@ tbody tr:hover {
   }
 }
 
-/* mobile layout */
-@media (max-width: 720px) {
-  .nav {
-    position: relative;
-  }
-
-  .menu-toggle {
-    display: flex;
-  }
-
-  .nav-links {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 12px;
-    flex-direction: column;
-    gap: 10px;
-    display: none;
-    min-width: 180px;
-  }
-
-  .nav-links.open {
-    display: flex;
-  }
-
-  .nav-links a {
-    margin: 0;
-    font-size: 14px;
-  }
-}
-
 /* =========================
-  MOBILE
-  CODE
-  SCALING
-  =========================
-  */
-@media (max-width: 640px) {
-  /* shrink code blocks */
+   MOBILE TYPOGRAPHY + CODE
+========================= */
+
+@media (pointer: coarse) {
   pre code {
     font-size: 12px;
     line-height: 1.5;
   }
 
-  /* inline code */
   code {
     font-size: 0.8em;
   }
 
-  /* tighter padding so content fits screen */
-  .code-scroll {
-    padding: 0 14px 14px 14px;
+  .container {
+    padding: 20px 16px;
   }
 
-  pre {
-    padding: 14px;
-  }
-
-  /* reduce card radius so it feels less bulky */
-  .code-block {
-    border-radius: 12px;
-  }
-
-  /* headings spacing also too large on phones */
   h1 {
     font-size: 28px;
     margin: 28px 0 12px;
@@ -610,10 +471,5 @@ tbody tr:hover {
   h3 {
     font-size: 18px;
     margin: 18px 0 8px;
-  }
-
-  /* container padding narrower on phones */
-  .container {
-    padding: 20px 16px;
   }
 }
