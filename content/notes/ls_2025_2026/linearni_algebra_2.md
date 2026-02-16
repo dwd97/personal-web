@@ -18,7 +18,7 @@ Zjednodušene to znamená, že dostanu sčítance přes všechny permutace z $p 
 
 Kde $S_n$ je grupa všech možných permutací na množině indexů $\{1,...,n\}$. Suma tedy iteruje přes všechny možné permutace.
 
-A znaménko: $\operatorname{sgn}(p) = (-1)^{\#inverzí}$
+A znaménko: $\operatorname{sgn}(p) = (-1)^{\#inverzi}$
 
 Lze zapsat také:
 
