@@ -5,17 +5,17 @@
       "title": "Letní semestr 2025/26",
       "items": [
         {
-          "file": "linearni_algebra_2_md.md",
+          "file": "linearni_algebra_2.md",
           "title": "Lineární algebra 2",
           "type": "md"
         },
         {
-          "file": "matematicka_analyza_1_md.md",
+          "file": "matematicka_analyza_1.md",
           "title": "Matematická analýza 1",
           "type": "md"
         },
         {
-          "file": "pocitacove_systemy_md.md",
+          "file": "pocitacove_systemy.md",
           "title": "Počítačové systémy",
           "type": "md"
         },

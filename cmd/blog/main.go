@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"strconv"
 	"strings"
 	"unicode"
 
@@ -81,6 +82,83 @@ type NotesItem struct {
 	URL   string `json:"url"`
 }
 
+type Heading struct {
+	Level int
+	Text  string
+	ID    string
+}
+
+func extractHeadings(md string) []Heading {
+	var result []Heading
+
+	lines := strings.Split(md, "\n")
+
+	for _, line := range lines {
+		trim := strings.TrimSpace(line)
+
+		if strings.HasPrefix(trim, "#") {
+			level := strings.Count(trim, "#")
+			text := strings.TrimSpace(trim[level:])
+			id := slugify(text)
+
+			result = append(result, Heading{
+				Level: level,
+				Text:  text,
+				ID:    id,
+			})
+		}
+	}
+
+	return result
+}
+
+func addHeadingIDs(html string) string {
+	re := regexp.MustCompile(`<h([1-6])>(.*?)</h[1-6]>`)
+
+	return re.ReplaceAllStringFunc(html, func(match string) string {
+		sub := re.FindStringSubmatch(match)
+		level := sub[1]
+		text := sub[2]
+
+		id := slugify(stripHTML(text))
+
+		return `<h` + level + ` id="` + id + `">` + text + `</h` + level + `>`
+	})
+}
+
+func stripHTML(s string) string {
+	re := regexp.MustCompile(`<.*?>`)
+	return re.ReplaceAllString(s, "")
+}
+
+func renderTOC(headings []Heading) string {
+	if len(headings) == 0 {
+		return ""
+	}
+
+	var b strings.Builder
+	b.WriteString(`<nav class="toc"><strong>Obsah</strong><ul>`)
+
+	for _, h := range headings {
+
+		// normalize depth so first heading has no indent
+		baseLevel := headings[0].Level
+		depth := h.Level - baseLevel
+		if depth < 0 {
+			depth = 0
+		}
+
+		indentPx := depth * 16
+
+		b.WriteString(`<li style="margin-left:` +
+			strconv.Itoa(indentPx) + `px">` +
+			`<a href="#` + h.ID + `">` + h.Text + `</a></li>`)
+	}
+
+	b.WriteString(`</ul></nav>`)
+	return b.String()
+}
+
 func loadNotesConfig() NotesConfig {
 	data, err := os.ReadFile("content/notes/notes.json")
 	if err != nil {
@@ -134,7 +212,7 @@ func processNotesFromConfig(cfg NotesConfig) []NoteSection {
 func renderNotes(sections []NoteSection) string {
 	var b strings.Builder
 
-	b.WriteString("<h2>Zápisky MFF UK</h2>")
+	b.WriteString("<h2>Notes MFF UK (in Czech)</h2>")
 
 	for _, s := range sections {
 		b.WriteString("<h3>" + s.Name + "</h3><ul>")
@@ -149,7 +227,13 @@ func renderNotes(sections []NoteSection) string {
 }
 
 func createNotePage(relPath, title, md string) string {
+	headings := extractHeadings(md)
+
 	htmlContent := markdownToHTML(md)
+	htmlContent = addHeadingIDs(htmlContent)
+
+	toc := renderTOC(headings)
+	htmlContent = toc + htmlContent
 
 	noteInner := renderTemplate("templates/page.html", map[string]string{
 		"TITLE":   title,
@@ -170,7 +254,13 @@ func createNotePage(relPath, title, md string) string {
 }
 
 func createPost(title string, md string) string {
+	headings := extractHeadings(md)
+
 	htmlContent := markdownToHTML(md)
+	htmlContent = addHeadingIDs(htmlContent)
+
+	toc := renderTOC(headings)
+	htmlContent = toc + htmlContent
 
 	postInner := renderTemplate("templates/post.html", map[string]string{
 		"TITLE":   title,
