@@ -45,7 +45,7 @@ pro $p=(1,2)$ platí $\operatorname{sgn}p=+1$ a součin $\prod_{i=1}^{n} a_{i,p(
 
 pro $p=(2,1)$ platí $\operatorname{sgn}p=-1$ a součin $\prod_{i=1}^{n} a_{i,p(i)} = a_{12}a_{21}$
 
-Tedy determinant je:
+Tedy determinant bude:
 
 $$
 \qquad
@@ -73,6 +73,10 @@ x_1=\frac{b_1a_{22}-b_2a_{12}}{a_{11}a_{22}-a_{21}a_{12}},
 x_2=\frac{a_{11}b_2-a_{21}b_1}{a_{11}a_{22}-a_{21}a_{12}}
 \
 $$
+
+#### 1.2 Sarrusovo pravidlo
+
+
 
 Platí také:
 
