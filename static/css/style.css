@@ -504,42 +504,55 @@ tbody tr:hover {
 }
 
 /* =========================
-   MOBILE CODE
-========================= */
-
-@media (max-width: 720px) {
+  MOBILE
+  CODE
+  SCALING
+  =========================
+  */
+@media (max-width: 640px) {
+  /* shrink code blocks */
   pre code {
-    font-size: 12.5px;
-    line-height: 1.55;
-  }
-
-  code {
-    font-size: 0.85em;
-  }
-
-  .code-header {
     font-size: 12px;
-    padding: 8px 12px;
+    line-height: 1.5;
   }
 
+  /* inline code */
+  code {
+    font-size: 0.8em;
+  }
+
+  /* tighter padding so content fits screen */
   .code-scroll {
-    padding-bottom: 12px;
+    padding: 0 14px 14px 14px;
   }
 
   pre {
-    padding: 14px 16px;
+    padding: 14px;
   }
-}
 
-@media (max-width: 720px) {
-  a,
-  button {
-    min-height: 40px;
+  /* reduce card radius so it feels less bulky */
+  .code-block {
+    border-radius: 12px;
   }
-}
 
-@media (max-width: 720px) {
+  /* headings spacing also too large on phones */
+  h1 {
+    font-size: 28px;
+    margin: 28px 0 12px;
+  }
+
+  h2 {
+    font-size: 22px;
+    margin: 24px 0 10px;
+  }
+
+  h3 {
+    font-size: 18px;
+    margin: 18px 0 8px;
+  }
+
+  /* container padding narrower on phones */
   .container {
-    padding: 24px 16px;
+    padding: 20px 16px;
   }
 }
