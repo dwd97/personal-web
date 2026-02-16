@@ -2,10 +2,13 @@
 
 ### Determinanty
 
-#### Heading 4
-
 ## Důkazy
 
 ## Příklady
+
+### Determinanty
+
+- počítání determinantu matice nižšího řádu podle definice
+- počítání determinantu matice vyššího řádu
 
 ## Aplikace

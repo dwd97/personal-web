@@ -54,7 +54,7 @@ personal-web/
   - [ ] tags/categories
   - [ ] frontmatter yaml
   - [ ] seo
-  - [ ] last updated date
+  - [ ] last updated date (maybe release date? separate?)
   - [ ] previous and next article
   - [ ] breadcrumbs
   - [ ] latex support

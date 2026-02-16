@@ -3,16 +3,21 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	stdhtml "html"
 	"log"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 	"unicode"
 
 	"github.com/yuin/goldmark"
+	"github.com/yuin/goldmark/ast"
 	"github.com/yuin/goldmark/extension"
+	"github.com/yuin/goldmark/renderer"
+	"github.com/yuin/goldmark/util"
 )
 
 const (
@@ -47,10 +52,73 @@ func renderTemplate(path string, data map[string]string) string {
 	return html
 }
 
+type CodeBlockRenderer struct{}
+
+func (r *CodeBlockRenderer) RegisterFuncs(reg renderer.NodeRendererFuncRegisterer) {
+	reg.Register(ast.KindFencedCodeBlock, r.renderFencedCodeBlock)
+}
+
+func (r *CodeBlockRenderer) renderFencedCodeBlock(
+	w util.BufWriter,
+	source []byte,
+	node ast.Node,
+	entering bool,
+) (ast.WalkStatus, error) {
+
+	if !entering {
+		return ast.WalkContinue, nil
+	}
+
+	n := node.(*ast.FencedCodeBlock)
+
+	language := string(n.Language(source))
+
+	filename := ""
+	if n.Info != nil {
+		meta := string(n.Info.Value(source))
+		fields := strings.Fields(meta)
+		if len(fields) >= 2 {
+			filename = fields[1]
+		}
+	}
+
+	// outer card
+	w.WriteString(`<div class="code-block">`)
+
+	// header
+	if filename != "" {
+		w.WriteString(`<div class="code-header">`)
+		w.WriteString(stdhtml.EscapeString(filename))
+		w.WriteString(`</div>`)
+	}
+
+	// scroll wrapper (THIS is the key change)
+	w.WriteString(`<div class="code-scroll">`)
+
+	// code
+	w.WriteString(`<pre><code class="language-`)
+	w.WriteString(stdhtml.EscapeString(language))
+	w.WriteString(`">`)
+
+	lines := n.Lines()
+	for i := 0; i < lines.Len(); i++ {
+		line := lines.At(i)
+		w.WriteString(stdhtml.EscapeString(string(line.Value(source))))
+	}
+
+	w.WriteString(`</code></pre>`)
+
+	// close scroll + card
+	w.WriteString(`</div></div>`)
+
+	return ast.WalkSkipChildren, nil
+}
+
 func renderWithBase(title, inner string) string {
 	base := renderTemplate("templates/base.html", map[string]string{
 		"TITLE":   title,
 		"CONTENT": inner,
+		"YEAR":    strconv.Itoa(time.Now().Year()),
 	})
 	return base
 }
@@ -90,45 +158,65 @@ type Heading struct {
 
 func extractHeadings(md string) []Heading {
 	var result []Heading
-
 	lines := strings.Split(md, "\n")
+
+	// store current heading path per level
+	path := make(map[int]string)
 
 	for _, line := range lines {
 		trim := strings.TrimSpace(line)
-
-		if strings.HasPrefix(trim, "#") {
-			level := strings.Count(trim, "#")
-			text := strings.TrimSpace(trim[level:])
-			id := slugify(text)
-
-			result = append(result, Heading{
-				Level: level,
-				Text:  text,
-				ID:    id,
-			})
+		if !strings.HasPrefix(trim, "#") {
+			continue
 		}
+
+		level := strings.Count(trim, "#")
+		text := strings.TrimSpace(trim[level:])
+		slug := slugify(text)
+
+		// update path at this level
+		path[level] = slug
+
+		// clear deeper levels
+		for l := level + 1; l <= 6; l++ {
+			delete(path, l)
+		}
+
+		// build hierarchical id
+		var parts []string
+		for l := 1; l <= level; l++ {
+			if p, ok := path[l]; ok {
+				parts = append(parts, p)
+			}
+		}
+		id := strings.Join(parts, "-")
+
+		result = append(result, Heading{
+			Level: level,
+			Text:  text,
+			ID:    id,
+		})
 	}
 
 	return result
 }
 
-func addHeadingIDs(html string) string {
+func addHeadingIDs(html string, headings []Heading) string {
 	re := regexp.MustCompile(`<h([1-6])>(.*?)</h[1-6]>`)
+	i := 0
 
 	return re.ReplaceAllStringFunc(html, func(match string) string {
+		if i >= len(headings) {
+			return match
+		}
+
 		sub := re.FindStringSubmatch(match)
 		level := sub[1]
 		text := sub[2]
-
-		id := slugify(stripHTML(text))
+		id := headings[i].ID
+		i++
 
 		return `<h` + level + ` id="` + id + `">` + text + `</h` + level + `>`
 	})
-}
-
-func stripHTML(s string) string {
-	re := regexp.MustCompile(`<.*?>`)
-	return re.ReplaceAllString(s, "")
 }
 
 func renderTOC(headings []Heading) string {
@@ -137,7 +225,7 @@ func renderTOC(headings []Heading) string {
 	}
 
 	var b strings.Builder
-	b.WriteString(`<nav class="toc"><strong>Obsah</strong><ul>`)
+	b.WriteString(`<nav class="toc"><strong>Index</strong><ul>`)
 
 	for _, h := range headings {
 
@@ -230,7 +318,7 @@ func createNotePage(relPath, title, md string) string {
 	headings := extractHeadings(md)
 
 	htmlContent := markdownToHTML(md)
-	htmlContent = addHeadingIDs(htmlContent)
+	htmlContent = addHeadingIDs(htmlContent, headings)
 
 	toc := renderTOC(headings)
 	htmlContent = toc + htmlContent
@@ -257,7 +345,7 @@ func createPost(title string, md string) string {
 	headings := extractHeadings(md)
 
 	htmlContent := markdownToHTML(md)
-	htmlContent = addHeadingIDs(htmlContent)
+	htmlContent = addHeadingIDs(htmlContent, headings)
 
 	toc := renderTOC(headings)
 	htmlContent = toc + htmlContent
@@ -306,14 +394,23 @@ func slugify(s string) string {
 
 func markdownToHTML(content string) string {
 	var buf bytes.Buffer
+
 	md := goldmark.New(
 		goldmark.WithExtensions(
-			extension.GFM, // enables tables, strikethrough, task lists, etc.
+			extension.GFM,
+		),
+		goldmark.WithRendererOptions(
+			// Use the 'renderer' package here, not 'html'
+			renderer.WithNodeRenderers(
+				util.Prioritized(&CodeBlockRenderer{}, 100),
+			),
 		),
 	)
+
 	if err := md.Convert([]byte(content), &buf); err != nil {
 		log.Fatal(err)
 	}
+
 	return buf.String()
 }
 

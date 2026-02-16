@@ -4,7 +4,7 @@ I believe that everyone should at least try to have a blog or an online presence
 
 Also I will help you add `robots.txt` and `sitemap.xml`, which help search engines to index your pages. As well as adding `frontmatter` for SEO.
 
-With Katex support: (inline): $e^{i\pi} + 1 = 0$
+With $\KaTeX$ support: (inline): $e^{i\pi} + 1 = 0$
 
 (block):
 
@@ -20,33 +20,33 @@ I will be using these libraries:
 
 For the file structure, create something similar to the file structure below. This will be the starting point.
 
-```
+```txt file_structure
 personal-web/
 ├─ .github/
-│   └─ workflows/
-│       └─ deploy.yml       # for deplyoing using github actions
+│ └─ workflows/
+│ └─ deploy.yml        # for deplyoing using github actions
 ├─ cmd/
-│   └─ blog/
-│       └─ main.go          # main Go file for blog generation
-├─ templates/               # HTML templates
-│   ├─ base.html            # will be the root for all of your other pages
-│   ├─ post.html
-│   ├─ page.html
-│   └─ index.html
-├─ content/                 # ALL source content
-│   └─ posts/
-├─ static/                  # will be copied over to public/
-│   ├─ css/
-│   └─ images/
-├─ public/                  # Generated output by main.go - will be done by Github Actions
-│   ├─ index.html
-│   ├─ posts/
-│   ├─ notes/
-│   └─ CNAME
+│ └─ blog/
+│ └─ main.go          # main Go file for blog generation
+├─ templates/         # HTML templates
+│ ├─ base.html        # will be the root for all of your other pages
+│ ├─ post.html
+│ ├─ page.html
+│ └─ index.html
+├─ content/           # ALL source content
+│ └─ posts/
+├─ static/            # will be copied over to public/
+│ ├─ css/
+│ └─ images/
+├─ public/            # Generated output by main.go - will be done by Github Actions
+│ ├─ index.html
+│ ├─ posts/
+│ ├─ notes/
+│ └─ CNAME
 ├─ go.mod
 ├─ go.sum
 ├─ .gitignore
-└─ README.md                # documentation
+└─ README.md # documentation
 ```
 
 ## Setup project
@@ -67,12 +67,10 @@ personal-web/
 
 ## Creating the template files
 
-> base.html:
-
 - basic template for an HTML5 page. Can be created in VS Code by typing ! and clicking Enter.
 - The {{...}} is going to be used inside the `main.go` for injecting that part of the website with dynamic content on deploy. Though it is still a static website.
 
-```html
+```html base.html
 <!doctype html>
 <html lang="en">
   <head>
