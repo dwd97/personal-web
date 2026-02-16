@@ -75,7 +75,9 @@ Je to mnemotechnická pomůcka na výpočet determinantu matice řádu 3. Tedy $
 
 ![sarrusovo_pravidlo](/images/notes/linearni_algebra_2/sarrusovo_pravidlo.png)
 
-Protože $S_3 = \\{ (1,2,3),(1,3,2),(2,1,3),(2,3,1),(3,1,2),(3,1,2),(3,2,1) \\}$ má 6 prvků, kde prvky $p=(1,2,3), (2,3,1) a (3,1,2)$ mají $\operatorname{sgn}p = +1$ a prvky $p=(1,3,2),(2,1,3),(3,2,1)$ mají $\operatorname{sgn}p=-1$
+Protože 
+$$S_3 = \\{ (1,2,3),(1,3,2),(2,1,3),(2,3,1),(3,1,2),(3,1,2),(3,2,1) \\}$$
+má 6 prvků, kde prvky $p=(1,2,3), (2,3,1) a (3,1,2)$ mají $\operatorname{sgn}p = +1$ a prvky $p=(1,3,2),(2,1,3),(3,2,1)$ mají $\operatorname{sgn}p=-1$
 
 #### 1.3 Vlastnosti determinantu
 
