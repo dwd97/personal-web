@@ -18,6 +18,8 @@ Zjednodušene to znamená, že dostanu sčítance přes všechny permutace z $p 
 
 Kde $S_n$ je grupa všech možných permutací na množině indexů $\{1,...,n\}$. Suma tedy iteruje přes všechny možné permutace.
 
+A znaménko: $\operatorname{sgn}(p) = (-1)^{\#inverzí}$
+
 Lze zapsat také:
 
 $$
@@ -33,24 +35,30 @@ a_{21} & a_{22}
 \\end{pmatrix} = a_{11}a_{22} - a_{21}a_{12}
 $$
 
+protože $|S_n| = 2$, nebo-li $S_2 = \{(1,2),(2,1)\}$
+
+$$
+\text{pro} p=(1,2) \text{ máme } \operatorname{sgn}p=+1
+\quad \text{a} \quad
+\prod_{i=1}^{n} a_{i,p(i)} = a_{11}a_{22}
+$$
+
 Exaktní odvození lze získat z vyjádření neznámé obecně metodou sčítací, dosazovací. Pro dvě rovnice: $x_1$ a $x_2$. Pro tři rovnice pak $x_1$, $x_2$ a $x_3$.
 
 Přesněji:
 $$
-\[
 \begin{aligned}
 a_{11}x_1 + a_{12}x_2 &= b_1 \\\\
 a_{21}x_1 + a_{22}x_2 &= b_2
 \end{aligned}
-\]
 $$
 
 $$
-\[
+\
 x_1=\frac{b_1a_{22}-b_2a_{12}}{a_{11}a_{22}-a_{21}a_{12}},
 \qquad
 x_2=\frac{a_{11}b_2-a_{21}b_1}{a_{11}a_{22}-a_{21}a_{12}}
-\]
+\
 $$
 
 Platí také:
