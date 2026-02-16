@@ -14,6 +14,7 @@ import (
 	"time"
 	"unicode"
 
+	mathjax "github.com/litao91/goldmark-mathjax" // You'll need to go get this
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/ast"
 	"github.com/yuin/goldmark/extension"
@@ -425,11 +426,14 @@ func slugify(s string) string {
 func markdownToHTML(content string) string {
 	var buf bytes.Buffer
 	md := goldmark.New(
-		goldmark.WithExtensions(extension.GFM),
+		goldmark.WithExtensions(
+			extension.GFM,
+			mathjax.MathJax, // Ujisti se, že používáš verzi, která podporuje $
+		),
 		goldmark.WithRendererOptions(
 			renderer.WithNodeRenderers(
 				util.Prioritized(&CodeBlockRenderer{}, 100),
-				util.Prioritized(&ImageLinkRenderer{}, 99), // Add this line
+				util.Prioritized(&ImageLinkRenderer{}, 99),
 			),
 		),
 	)
