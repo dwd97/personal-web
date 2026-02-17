@@ -575,6 +575,10 @@ tbody tr:hover {
     display: flex;
   }
 
+  pre code {
+    font-size: 0.4em;
+  }
+
   .nav-links {
     position: absolute;
     top: 100%;
@@ -637,8 +641,9 @@ tbody tr:hover {
   =========================
   */
 @media (pointer: coarse) {
-  code {
-    font-size: 0.8em;
+  code,
+  pre code {
+    font-size: 0.4em;
   }
 
   .container {
