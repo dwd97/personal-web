@@ -2,43 +2,12 @@
   "sections": [
     {
       "id": "ls_2025_2026",
-      "title": "Letní semestr 2025/26",
-      "items": [
-        {
-          "file": "linearni_algebra_2.md",
-          "title": "Lineární algebra 2",
-          "type": "md"
-        },
-        {
-          "file": "matematicka_analyza_1.md",
-          "title": "Matematická analýza 1",
-          "type": "md"
-        },
-        {
-          "file": "pocitacove_systemy.md",
-          "title": "Počítačové systémy",
-          "type": "md"
-        },
-        {
-          "file": "uvod_do_linuxu.md",
-          "title": "Úvod do Linuxu",
-          "type": "md"
-        },
-        {
-          "file": "algoritmy_datove_struktury_1.md",
-          "title": "Algoritmy a datové struktury 1",
-          "type": "md"
-        },
-        {
-          "file": "programovani_2.md",
-          "title": "Programování 2 [C#]",
-          "type": "md"
-        }
-      ]
+      "title": "Summer semester 2025/26 (WIP)",
+      "items": []
     },
     {
       "id": "zs_2025_2026",
-      "title": "Zimní semestr 2025/26",
+      "title": "Winter semester 2025/26",
       "items": [
         {
           "file": "algoritmizace.pdf",
