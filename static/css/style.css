@@ -576,7 +576,7 @@ tbody tr:hover {
   }
 
   pre code {
-    font-size: 0.4em;
+    font-size: 14px !important;
   }
 
   .nav-links {
@@ -643,7 +643,7 @@ tbody tr:hover {
 @media (pointer: coarse) {
   code,
   pre code {
-    font-size: 0.4em;
+    font-size: 0.8em !important;
   }
 
   .container {
