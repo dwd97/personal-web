@@ -3,7 +3,23 @@
     {
       "id": "ls_2025_2026",
       "title": "Summer semester 2025/26 (WIP)",
-      "items": []
+      "items": [
+        {
+          "file": "pocitacove_systemy.md",
+          "title": "Počítačové systémy",
+          "type": "md"
+        },
+        {
+          "file": "programovani_2.md",
+          "title": "Programování 2",
+          "type": "md"
+        },
+        {
+          "file": "uvod_do_linuxu.md",
+          "title": "Úvod do Linuxu",
+          "type": "md"
+        }
+      ]
     },
     {
       "id": "zs_2025_2026",

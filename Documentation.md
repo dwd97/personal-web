@@ -4,44 +4,49 @@
 
 ```
 personal-web/
-├─ .github/                     # entrypoints
-│   └─ workflows/
-│       └─ deploy.yml       # for deplyoing using github actions
-├─ cmd/                     # entrypoints
-│   └─ blog/
-│       └─ main.go
-├─ internal/                # core logic (not importable externally)
-│   ├─ markdown/            # wrapper around goldmark
-│   ├─ parser/              # frontmatter parsing
-│   ├─ renderer/            # HTML rendering
-│   ├─ site/                # site builder (routing, pages)
-│   └─ fs/                  # file loading utilities
-├─ templates/               # HTML templates
-│   ├─ base.html            # every page is rendered inside this html page
-│   ├─ post.html
-│   ├─ page.html
-│   └─ index.html
-├─ content/                 # ALL source content
-│   ├─ posts/
-│   ├─ notes/               # folder for notes, categorized by semester. In Markdown, PDF and etc.
-│   └─ pages/               # other necessary pages
-│       ├─ about.md
-│       └─ contact.md
-├─ static/                 # copied as-is
-│   ├─ css/
-│       └─ style.css
-│   ├─ images/
-│   └─ fonts/
-├─ public/                 # GENERATED output (deploy this)
-│   ├─ index.html
-│   ├─ posts/
-│   ├─ notes/
-│   └─ CNAME
-├─ go.mod
-├─ go.sum
-├─ .gitignore
-├─ Documentation.md
-└─ README.md
+├── .github/
+│   └── workflows/
+│       └── deploy.yml        # GitHub Actions config
+├── cmd/
+│   └── blog/
+│       └── main.go           # Small entry point, few lines
+├── internal/                 # Core application logic
+│   ├── fs/
+│   │   └── fs.go             # File system helpers (Copy, Write, Mkdir)
+│   ├── markdown/
+│   │   └── renderer.go       # Goldmark config (MathJax, Syntax Highlight)
+│   ├── parser/
+│   │   ├── frontmatter.go    # Metadata structs and parsing
+│   │   └── utils.go          # Helpers (Slugify, Reading Time, Headings)
+│   ├── renderer/
+│   │   └── template.go       # HTML template management
+│   └── site/
+│       ├── site.go           # Main builder logic (The Orchestrator)
+│       └── types.go          # Shared data models (Post, Note, Config)
+├── templates/                # (Existing) HTML files
+│   ├── base.html
+│   ├── index.html
+│   ├── page.html
+│   └── post.html
+├── content/                  # (Existing) Content source
+│   ├── notes/
+│   │   └── notes.json
+│   ├── pages/                # (New) Move loose .md files here
+│   │   ├── about.md
+│   │   └── contact.md
+│   └── posts/
+├── static/                   # (Existing) Assets
+│   ├── css/
+│   │   └── style.css
+│   ├── images/
+│   ├── fonts/
+│   └── CNAME                 # (Move here)
+├── public/                   # (Generated) Gitignored
+├── go.mod
+├── go.sum
+├── .gitignore
+├── Documentation.md
+└── README.md
 ```
 
 ## tasks

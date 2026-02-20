@@ -55,13 +55,15 @@ personal-web/
    - create .gitignore file with `/public` as its content. This will be managed using Github Actions externally, no need to commit.
 2. Setup DNS and custom domain
    - in your DNS settings at your domain provider add these records:
-     | Type | Host | Answer |
-     | ----------- | -------------- | ---- |
-     | A | domainname.com | 185.199.108.153 |
-     | A | domainname.com | 185.199.109.153 |
-     | A | domainname.com | 185.199.110.153 |
-     | A | domainname.com | 185.199.111.153 |
-     | CNAME | www.domainname.com | gitUsername.github.io |
+
+| Type | Host | Answer |
+| ----------- | -------------- | ---- |
+| A | domainname.com | 185.199.108.153 |
+| A | domainname.com | 185.199.109.153 |
+| A | domainname.com | 185.199.110.153 |
+| A | domainname.com | 185.199.111.153 |
+| CNAME | www.domainname.com | gitUsername.github.io |
+
    - more: [github docs](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site)
 3. In Github pages select `Deploy from branch`
 
