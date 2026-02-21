@@ -81,7 +81,7 @@ mezi nejčastěji používáné patří:
 ## Práce s terminálem
 
 - `[intro@localhost] ~` je prompt. A `~` odkazuje na domovský adresář, ale ten může být delší. V domovském adresáři se ukládají všechny soubor uživatele včetně nastavení prostředí jako `.config`.
-- **Shell** - zobrazuje výzvu a jedná se o plnohodnotný programovací jazyk.
+- **Shell** - zobrazuje výzvu a jedná se o plnohodnotný programovací jazyk. Shell je program běžící uvnitř terminálu (emulátoru terminálu).
 
 ### Zkratky/Používání
 
@@ -99,7 +99,8 @@ mezi nejčastěji používáné patří:
 - `uptime` - vytiskne dobu běhu stroje
 - `ls` - "list", zobrazí seznam souborů v aktuálním adresáři
     - `ls -l` - "list long", tzv. dlouhý režime, kde -l je přepínač
-    - `ls -la` - vypíše i skryté soubory
+    - `ls -la` - vypíše i skryté soubory (v long list)
+    - `ls -a` - vypíše i skryté soubory bez přepínače long
     - `ls -lh` - vypíše velikosti souborů čitelné pro normálního uživatele
     - `ls -lt` - vypíše seřazené podle času modifikace
     - `ls -l one.txt two.txt three.txt four.txt` - zobrazit si informace pouze k určitým souborům v adresáři
@@ -108,12 +109,35 @@ mezi nejčastěji používáné patří:
     - `ls [of]*.txt` - vytiskne soubory začínající na o nebo f s příponou .txt
     - `ls *[a-f].txt` - vytiskne všechny soubory s příponou .txt, co končí na písmena a až f
     - `ls -d D*` - vypíše soubory začínající na písmeno d, ale s přepínačem -d, který zabrání, aby byl vypsán i obsah těchto souborů (adresářů)
+    - `ls x?.txt` - vypíše soubory, co mají 6 znaků, tedy x_.txt, kde _ je libovolný znak
+    - `ls -a ~` nebo `ls -d ~/.*` - vypíše všechny skryté soubory bez obsahu v domovském adresáři (ne root)
 - `cd` - "change directory", změní aktuální adresář na adresář daný argumentem. Např.:
     - `cd Documents` - do složky Documents
     - `cd ..` - do nadřazeného adresáře
     - `cd .` - změní na aktuální adresář
     - `cd` - bez argumentů změní na domovský adresář
 - `pwd` - vypíše celou (absolutní) cestu k aktuálnímu adresáři
+- `cat` - "concatenate" - vypíše obsah souboru, lze použít i ke spojování
+    - `cat *` - vypíše obsah všech souborů
+    - `cat [0-9][0-9][0-9].txt` - vypíše obsah všech souborů s názvy [000-999].txt
+- `hexdump` - vypíše bajty souboru v hexadecimálním tvaru
+    - `hexdump -C c/image.bmp` - přepínač -C slouží k vypsání ASCII znaků vedle hexdumpu
+- `file` - slouží k zobrazení metadat k souboru jako typ souboru, u obrázku velikost atd.
+- `man [argument/cmd]` - "manual", slouží k zobrazení dokumentace k určitému příkazu
+    - `man cat` - zobrazí přepínače a způsob použití příkazu cat
+    - `man man` - zobrazí úplný seznam sekcí
+    - `/` - po otevření manuálu se dá pomocí lomítka vyhledávat
+    - `q` - vypne manuál
+    - `Up/Down Arrow` - navigace v manuálu
+- `--help` - přepínač, funguje u většiny programů GNU, vypíšou nápovědu
+- `--version` nebo `-v` nebo `-V` - přepínač, vypíše verzi a autorská práva programu
+- `--verbose` nebo `--debug` (občas `-v` nebo `-d`) - spustí program v debug režimu, kdy program vypisuje podrobně, co dělá
+- `--dry-run` (občas `-n`) - spustí program bez toho, aniž by provedl jakékoliv změny, např. vypsání souborů, které  by odstranil
+- `--interactive` (občas `-i`) - program požádá o potvrzení při destruktivních akcích
+- `--` - ukončí seznam přepínaču, hodí se pokud existuje v adresáři soubor začínající pomlčkou. Hodí se často používat pro jistotu.
+    - `ls -l -h -- *.txt` - bezpečná konvence, příkaz, přepínače, ukončení přepínaču a wildcard nebo název souboru. Toto vypíše "lidsky" velikosti a názvy souborů s příponou .txt
+- `\ ` - pokud použijeme soubor s mezerami v názvu, tak mezery jdou escapovat pomocí zpátečního lomítka `\`, tedy `ls tady\ je\ mezera.txt`
+- `wget [URL]` - stáhnutí souboru do aktuálního adresáře
 
 ### Doplnění tabulátorem
 
@@ -175,3 +199,6 @@ mezi nejčastěji používáné patří:
 - mezi nejpoužívanější patří: Emacs, Joe, mcedit, nano a Vim
 - otevírají se pomocí příkazu + argumentu, např. `mcedit hello.py`
 - jedná se o TUI editory, takže jsou vesměs dostupné v terminálu bez grafického rozhraní a tedy lze s nimi pracovat vzdáleně.
+
+# 3. Hodina
+
