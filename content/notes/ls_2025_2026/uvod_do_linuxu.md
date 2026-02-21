@@ -32,6 +32,11 @@ mezi nejčastěji používáné patří:
 - **GNOME, Plasma (KDE), Xfce, LXDE** - podobné prostředí ostatním OS
 - **Openbox, i3** - ovládájí se většinou klávesnicí, steep learning curve
 
+### Zkratky v Linuxu
+
+- `Super(Windows key) + L` - logs the user out
+- `Ctrl + Q` - quits current application
+
 ## Odbočka: Git (správa verzí kódů)
 
 - sledování změn a zapamatování předchozích stavů.
@@ -47,6 +52,7 @@ mezi nejčastěji používáné patří:
 - název souboru + adresář = cesta
 - Oddělovačem v adresáři je `/` dopředné lomítko.
 - Na Linuxu se v cestě rozlišují velká a malá písmena.
+- adresář je speciální typ souboru. Vše je soubor.
 
 ### Kořenový adresář
 
@@ -61,3 +67,39 @@ mezi nejčastěji používáné patří:
 
 - `..` - nadřazený (rodičovský) adresář. Příklad: lze zkombinovat `/home/documents/films/../dopis.odt` zkráceně jako `/home/documents/dopis.odt`
 - `.` - aktuální adresář. Takže (relativní cesta) lze napsat `./bin/knihy/harry_poter.epub` nebo `bin/knihy/harry_poter.epub`
+
+### Přípony souborů
+
+- Linux nevyžaduje použití přípon u soborů a soubory mohou fungovat bez nich.
+- Jiné soubory mohou mít přípon více, např. `tar.gz` (tape archive komprimován gzipem). Ty pak jsou vyvíjeny nezávisle a lze změnit gzip jiným komprimovacím algoritmem bez ohledu na archivační algoritmus.
+
+### Skryté soubory
+
+- Soubory s předponou `.` Jsou většinou skryté, protože se nepředpokládá, že by s nimi uživatel potřeboval přímo pracovat. Lze je odhalit v CLI nebo GUI.
+- např.: `.gitignore` pro nastavení pravidel gitu nebo `.config` pro nastavení Linuxu
+
+## Práce s terminálem
+
+- `[intro@localhost] ~` je prompt. A ~ odkazuje na domovskou adresu.
+- **Shell** - zobrazuje výzvu a jedná se o plnohodnotný programovací jazyk.
+
+### Zkratky/Používání
+
+- `Ctrl + Left/Right Arrow` - přeskakování slov
+- `Up/Down Arrow` - načítání předchozí zadané příkazy
+- `Enter` - spuštění příkazů
+- `Ctrl + D` - ukončení terminálu (nejčistší způsob)
+- `Ctrl + C` - násilné ukončení programu
+- `Ctrl + Shift + C` nebo `Select Text` - zkopírování obsahu do schránky
+- `Middle Mouse Button` - vloží se text ze schránky
+
+### Příkazy
+
+- `exit` - ukončení terminálu
+- `uptime` - vytiskne dobu běhu stroje
+- `ls` - "list", zobrazí seznam souborů v aktuálním adresáři
+    - `ls -l` - "list long", tzv. dlouhý režime, kde -l je přepínač
+    - `ls -la` - vypíše i skryté soubory
+    - `ls -lh` - vypíše velikosti souborů čitelné pro normálního uživatele
+    - `ls -lt` - vypíše seřazené podle času modifikace
+- `cd` - "change directory", změní aktuální adresář na adresář daný argumentem. Např.: `cd Documents` - do složky Documents, `cd ..` - do nadřazeného adresáře
