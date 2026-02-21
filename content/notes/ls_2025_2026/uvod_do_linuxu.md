@@ -38,4 +38,26 @@ mezi nejčastěji používáné patří:
 
 # 2. hodina
 
-## 
+## Příkazová řádka
+
+- Pomocí CLI lze systém ovládat přesně. Uložené soubory s příkazy se nazývají skripty. Namísto programovacích jazyků, kde se spouští funkce, tak se v CLI se spouští programy.
+
+## Názvy souborů a cesty
+
+- název souboru + adresář = cesta
+- Oddělovačem v adresáři je `/` dopředné lomítko.
+- Na Linuxu se v cestě rozlišují velká a malá písmena.
+
+### Kořenový adresář
+
+- root/kořenový adresář je jediné dopředné lomítko `/`
+
+### Relativní a absolutní cesta
+
+- **relativní** - Nezačíná lomítkem. `adresar/soubor.txt` Potřeba zkombinovat s aktuální absolutní cestou. 
+- **absolutní** - Začíná lomítkem. `/adresar/soubor.txt` Konkrétní soubor nehledě na tom, ve kterém adresáři právě jste.
+
+### Speciální adresáře
+
+- `..` - nadřazený (rodičovský) adresář. Příklad: lze zkombinovat `/home/documents/films/../dopis.odt` zkráceně jako `/home/documents/dopis.odt`
+- `.` - aktuální adresář. Takže (relativní cesta) lze napsat `./bin/knihy/harry_poter.epub` nebo `bin/knihy/harry_poter.epub`
