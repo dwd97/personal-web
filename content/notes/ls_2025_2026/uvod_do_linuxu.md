@@ -1,3 +1,5 @@
+# 1. hodina
+
 ## Co je Linux
 
 [Vývoj Unixu (wikipedie)](https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Unix_history-simple.svg/1920px-Unix_history-simple.svg.png)
@@ -20,6 +22,20 @@
 - **všechno je soubor** - proto stačí jen jedno API pro všechno
 - **víceuživatelský** - více uživatelů může používat systém naráz, vzdáleně i lokálně
 - **balíčky** - pro instalace aplikací, ty se pak lépe udržují a automaticky aktualizují
-- **lze řídit všechno** - 
+- **lze řídit všechno** - pomocí CLI
+
+## Pracovní prostředí
+
+- ovlivňují vzhled a způsob ovládání Linuxu.
+
+mezi nejčastěji používáné patří:
+- **GNOME, Plasma (KDE), Xfce, LXDE** - podobné prostředí ostatním OS
+- **Openbox, i3** - ovládájí se většinou klávesnicí, steep learning curve
+
+## Odbočka: Git (správa verzí kódů)
+
+- sledování změn a zapamatování předchozích stavů.
+
+# 2. hodina
 
 ## 
