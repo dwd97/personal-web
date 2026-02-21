@@ -12,7 +12,7 @@
   --accent: #0076ad;
   --math-text: #0d55b9;
 
-  --code-bg: #f6f8fb; /* subtle blue-gray */
+  --code-bg: #eeeeee; /* subtle blue-gray */
   --code-header-bg: rgba(0, 0, 0, 0.03);
   --code-header-text: #475569;
 
@@ -30,7 +30,7 @@
   --accent: #0b92cc;
   --math-text: #7cc4ff;
 
-  --code-bg: #0f172a;
+  --code-bg: #091d4d;
   --code-text: #e6edf3;
   --code-header-bg: rgba(255, 255, 255, 0.06);
   --code-header-text: #cbd5e1;
