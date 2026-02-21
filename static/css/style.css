@@ -12,7 +12,7 @@
   --accent: #0076ad;
   --math-text: #0d55b9;
 
-  --code-bg: #eeeeee; /* subtle blue-gray */
+  --code-bg: #f6f8fb; /* subtle blue-gray */
   --code-header-bg: rgba(0, 0, 0, 0.03);
   --code-header-text: #475569;
 
@@ -30,7 +30,7 @@
   --accent: #0b92cc;
   --math-text: #7cc4ff;
 
-  --code-bg: #091d4d;
+  --code-bg: #0f172a;
   --code-text: #e6edf3;
   --code-header-bg: rgba(255, 255, 255, 0.06);
   --code-header-text: #cbd5e1;
@@ -219,9 +219,13 @@ a:hover {
 code {
   font-family: "JetBrains Mono", monospace;
   font-size: 14px;
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(0, 118, 173, 0.08);
   padding: 2px 6px;
   border-radius: 6px;
+}
+
+[data-theme="dark"] code {
+  background: rgba(11, 146, 204, 0.12);
 }
 
 /* container */
