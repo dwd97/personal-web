@@ -17,8 +17,8 @@
 #### vlastnosti Linuxu
 - **OSS (open source software)**
 - **konfigurace v textových souborech**
-- **GUI (grafické rozhraní)** - většinou není potřeba
-- **CLI (příkazová řádka)** - přesné a zautomatizovatelné
+- **GUI (grafické uživatelské rozhraní)** - většinou není potřeba
+- **CLI (rozhraní příkazové řádky)** - přesné a zautomatizovatelné
 - **všechno je soubor** - proto stačí jen jedno API pro všechno
 - **víceuživatelský** - více uživatelů může používat systém naráz, vzdáleně i lokálně
 - **balíčky** - pro instalace aplikací, ty se pak lépe udržují a automaticky aktualizují
@@ -80,7 +80,7 @@ mezi nejčastěji používáné patří:
 
 ## Práce s terminálem
 
-- `[intro@localhost] ~` je prompt. A ~ odkazuje na domovskou adresu.
+- `[intro@localhost] ~` je prompt. A `~` odkazuje na domovský adresář, ale ten může být delší. V domovském adresáři se ukládají všechny soubor uživatele včetně nastavení prostředí jako `.config`.
 - **Shell** - zobrazuje výzvu a jedná se o plnohodnotný programovací jazyk.
 
 ### Zkratky/Používání
@@ -102,4 +102,39 @@ mezi nejčastěji používáné patří:
     - `ls -la` - vypíše i skryté soubory
     - `ls -lh` - vypíše velikosti souborů čitelné pro normálního uživatele
     - `ls -lt` - vypíše seřazené podle času modifikace
-- `cd` - "change directory", změní aktuální adresář na adresář daný argumentem. Např.: `cd Documents` - do složky Documents, `cd ..` - do nadřazeného adresáře
+- `cd` - "change directory", změní aktuální adresář na adresář daný argumentem. Např.:
+    - `cd Documents` - do složky Documents
+    - `cd ..` - do nadřazeného adresáře
+    - `cd .` - změní na aktuální adresář
+    - `cd` - bez argumentů změní na domovský adresář
+- `pwd` - vypíše celou (absolutní) cestu k aktuálnímu adresáři
+
+### Doplnění tabulátorem
+
+- Např. při psaní argumentu `cd Doc`, tak pokud v daném adresáři existuje jediný možný soubor začínající na Doc, tedy Documents, tak se to doplní na `cd Documents`.
+- V ostatních případech je třeba `Tab` stisknout vícekrát pro zobrazení možných příkazů nebo všech souborů, co odpovídá danému argumentu pokud nejjednoznačné.
+
+### Midnight commander
+
+- Spustí se příkazem `mc`
+- čísla dole odkazují na fuknční klávesy
+
+#### Ovládání
+
+- `F1` - Help
+- `F2` - Menu, otevře víc příkazů pro soubor
+- **`F3`** - zobrazí obsah souboru
+- **`F4`** - otevře textový editor (s syntax highlighting) pro editaci souboru
+- `F5` - Copy, zkopíruje soubor do jiného adresáře
+- `F6` - Move, změní adresář souboru
+- `F7` - MKDIR, vytvoří nový soubor
+- `F8` - Delete
+- `F9` - Vybere nabídku MC a umožní interagovat pomocí klávesnice
+- `F10` - Quit
+
+- `Tab` - přepínání mezi panely vpravo a vlevo
+- `Insert` - umožňuje vybrat soubory (pro provádění akcí jako smazání)
+- `+` - umožní zadat masku pro výběr více souborů najednou
+- `Ctrl + o` - skryje panely a dočasně přepne do shellu, ale nezamkne ho
+
+### Ranger
