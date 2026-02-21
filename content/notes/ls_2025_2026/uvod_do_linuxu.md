@@ -102,6 +102,12 @@ mezi nejčastěji používáné patří:
     - `ls -la` - vypíše i skryté soubory
     - `ls -lh` - vypíše velikosti souborů čitelné pro normálního uživatele
     - `ls -lt` - vypíše seřazené podle času modifikace
+    - `ls -l one.txt two.txt three.txt four.txt` - zobrazit si informace pouze k určitým souborům v adresáři
+    - `ls -l *.txt` - zobrazí informace jen k souborům s příponou .txt (tzv. **wildcards** = zástupné znaky pro určení více souborů najednou, řadí abecedně)
+    - `ls t*` - vytiskne všechny soubory začínající t
+    - `ls [of]*.txt` - vytiskne soubory začínající na o nebo f s příponou .txt
+    - `ls *[a-f].txt` - vytiskne všechny soubory s příponou .txt, co končí na písmena a až f
+    - `ls -d D*` - vypíše soubory začínající na písmeno d, ale s přepínačem -d, který zabrání, aby byl vypsán i obsah těchto souborů (adresářů)
 - `cd` - "change directory", změní aktuální adresář na adresář daný argumentem. Např.:
     - `cd Documents` - do složky Documents
     - `cd ..` - do nadřazeného adresáře
@@ -114,7 +120,7 @@ mezi nejčastěji používáné patří:
 - Např. při psaní argumentu `cd Doc`, tak pokud v daném adresáři existuje jediný možný soubor začínající na Doc, tedy Documents, tak se to doplní na `cd Documents`.
 - V ostatních případech je třeba `Tab` stisknout vícekrát pro zobrazení možných příkazů nebo všech souborů, co odpovídá danému argumentu pokud nejjednoznačné.
 
-### Midnight commander
+## Midnight commander
 
 - Spustí se příkazem `mc`
 - čísla dole odkazují na fuknční klávesy
@@ -137,4 +143,35 @@ mezi nejčastěji používáné patří:
 - `+` - umožní zadat masku pro výběr více souborů najednou
 - `Ctrl + o` - skryje panely a dočasně přepne do shellu, ale nezamkne ho
 
-### Ranger
+## Ranger
+
+- správce souborů inspirovaný Vimem
+
+#### Ovládání - procházení
+
+- `q` - ukončí ranger
+- `j` - posun dolů
+- `k` - posun nahoru
+- `h` - přesun do nadřazeného adresáře
+- `l` - otevření souboru nebo přesun do adresáře
+- `gg` - přejít na začátek seznamu
+- `G` - přejít na konec seznamu
+- `gh` - přesune aktuální adresář do domovského adresáře, nebo-li `cd ~`
+- `gm` - přesune do souboru /media, nebo-li `cd /media`
+- `gr` - přesune aktuální adresář do `/`, nebo-li root, tedy `cd /`
+
+#### Ovládání - práce se soubory
+
+- `zh` - zobrazí skryté soubory
+- `cw` - přejmenuje aktuální soubor
+- `Spacebar` - vybere aktuální soubor
+- `yy` - vyjmutí (kopírování) souboru nebo více souborů
+- `dd` - označení vybraných souborů pro operaci vystřižení
+- `pp` - vložit vyjmutý nebo vystřižený soubor/soubory
+- `dD` - odstranění vybraných souborů
+
+## Úpravy souborů
+
+- mezi nejpoužívanější patří: Emacs, Joe, mcedit, nano a Vim
+- otevírají se pomocí příkazu + argumentu, např. `mcedit hello.py`
+- jedná se o TUI editory, takže jsou vesměs dostupné v terminálu bez grafického rozhraní a tedy lze s nimi pracovat vzdáleně.
