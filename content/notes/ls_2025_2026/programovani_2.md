@@ -112,14 +112,14 @@
 
 - **postinkrement** - `i++`
     - nejdříve načte hodnotu i, pak inkrementuje o 1
-```C# postinkrement
+```C#
 int i = 5;
 int x = i++; // x = 5, i = 6
 ```
 
 - **preinkrement** - `++i;`
     - nejdříve se i zvýší o 1, pak se načte hodnota i.
-```C# preinkrement
+```C#
 int i = 5;
 int x = ++i; // i = 6, x = 6
 ```
@@ -134,3 +134,124 @@ int x = ++i; // i = 6, x = 6
 ### Podmíněný příkaz
 
 - `if (a == 5) b = 17;`
+- relační operátory - `==` `!=` `<` `>` `<=` `>=`
+- logické spojky
+    - zkrácené vyhodnocování = vyhodnotí jen potřebné množství výrazů
+        - `&&` and
+        - `||` or
+    - úplné vyhodnocování = vyhodnotí všechny výrazy, může se hodit pokud je potřeba zavolat nějakou funkci a pracovat s jejím výsledkem
+        - `&` and
+        - `|` or
+        - `!` not
+        - `^` xor
+
+### Switch
+
+- je povinnost ukončit každou sekci příkazem `break;`
+    - kromě výjimky např. u case 2 a case 3 v příkladu, kdy pro dvě podmínky se vykoná stejný příkaz
+- V C/C++/Java/PHP - může se propadat mezi sekcemi, proto se nedoporučuje používat, V C# opraveno
+
+```C#
+int i = 5;
+switch(i)
+{
+    case 1:
+        i++;
+        break;
+    case 2:
+    case 3:
+        i--;
+        break;
+    case 4:
+    case 5:
+        break;
+    default:
+        i = 5; break;
+}
+```
+
+### Cykly
+
+#### For cyklus
+
+```C#
+int N = 12
+int[] a = new int[N];
+
+// provede se 12x, (inicializace; podmínka; příkaz iterace)
+for (int i=0; i<N; i++){
+    a[i] = i
+}
+```
+
+#### While a Do-While
+
+`while (podmínka) { příkazy }`
+
+`do { příkazy } while (podmínka)`
+
+#### Ukončení cyklu
+
+- `continue` - pokračování do další iterace
+- `break` - ukončení cyklu
+
+### Funkce
+
+- funkce patří třídě nebo objektu
+- musí vracet výsledek nebo musí vrátit `void` a k ukončení funkce a vrácení hodnoty se napíše `return;`
+- při deklaraci píšeme `()` i pro funkce bez parametrů
+- Od C#7 lze definovat lokální funkci ve funkci
+
+#### Předávání parametrů
+1. hodnotou (výchozí pro C#)
+
+```C#
+using System;
+class App {
+    static public void Main() {
+        string isVerified = false;
+        isVerified = ChangeValue(isVerified);
+        Console.WriteLine($"This user is verified: {isVerified ? "yes" : "no"}")
+    }
+
+    static bool ChangeValue(bool currentValue) {
+        currentValue = !currentValue;
+        return currentValue;
+    }
+}
+```
+
+2. odkazem - pomocí specifikátoru `ref`
+
+```C#
+using System;
+class App {
+    static public void Main() {
+        string name = "Peter";
+        SetValue(ref name);
+        Console.WriteLine(name); // it will print "John"
+    }
+
+    static void SetValue(ref string name) {
+        name = "John";
+    }
+}
+```
+
+3. výstupním parametrem - pomocí specifikátoru `out`, ten nemusí mít vstupní hodnotu
+
+```C#
+using System;
+class App {
+    static public void Main() {
+        int num;
+        Sum(out num);
+        Console.WriteLine($"The sum is {num}")
+    }
+
+    public static void Sum(out int num) {
+        num = 80;
+        num += num;
+    }
+}
+```
