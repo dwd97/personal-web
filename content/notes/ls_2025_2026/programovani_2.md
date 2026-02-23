@@ -45,4 +45,5 @@
 ## Struktura programu
 
 - celý program se skládá ze tříd. Je spuštěn statickou metodou main - `static void main(){}`
+    - volný kód = top-level statements (ten se ale obalí v IDE zase do tříd)
 - položky deklarované ve třídě: metody (členské funkce), datové složky (členské proměnné)
