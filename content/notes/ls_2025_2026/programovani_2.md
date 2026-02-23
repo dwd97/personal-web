@@ -112,14 +112,14 @@
 
 - **postinkrement** - `i++`
     - nejdříve načte hodnotu i, pak inkrementuje o 1
-```
+```C#
 int i = 5;
 int x = i++; // x = 5, i = 6
 ```
 
 - **preinkrement** - `++i;`
     - nejdříve se i zvýší o 1, pak se načte hodnota i.
-```
+```C#
 int i = 5;
 int x = ++i; // i = 6, x = 6
 ```
