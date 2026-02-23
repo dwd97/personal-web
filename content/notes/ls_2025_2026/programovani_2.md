@@ -226,7 +226,7 @@ class App {
 ```C#
 using System;
 class App {
-    static public void Main() {
+    static public void Main(string[] args) {
         string name = "Peter";
         SetValue(ref name);
         Console.WriteLine(name); // it will print "John"
@@ -243,7 +243,7 @@ class App {
 ```C#
 using System;
 class App {
-    static public void Main() {
+    static public void Main(string[] args) {
         int num;
         Sum(out num);
         Console.WriteLine($"The sum is {num}")
@@ -255,3 +255,119 @@ class App {
     }
 }
 ```
+
+#### Výchozí metoda Main()
+
+- vytvaří se pro ni samostatní třída
+- určuje začátek a konce výpočtu
+- většinou je jediná, jinak se musí určit, která se má spustit
+
+### Vstup a výstup
+
+- `Console.Read();` - vrací int, kód znaku ze vstupu
+- `Console.ReadLine();` - vrací string, jeden řádek ze vstupu
+- `Console.Write(výraz);` - vypíše kód znaku z parametru
+- `Console.WriteLine(výraz);` - vypíše hodnotu výrazu, stringu
+
+**formátovaný**
+- `Console.WriteLine("x0 = {0}, x1 = {1}", x0, x1)`
+- `Console.WriteLine($"x0 = {x0}, x1 = {x1}")`
+
+## Soubory
+
+- `.cs` - zdrojový kód, stačí překlad pomocí csc.exe
+
+**Další z Visual Studia:**
+- `.csproj` - projekt
+- `.sln` - solution
+
+**Top-level statementy** - zaobalí se do tříd
+**global usingy** - co se používá, např. `using System;`, `using System.Collections.Generic;`
+**file-scoped namespaces** - `namespace Aplikace {}`
+
+## Dynamicky alokované proměnné
+
+- `new + konstruktor objektu` - vrací vytvořenou instanci (ukazatel na ni)
+- string, pole, třídy = referenční typy, potřeba vytvořit pomocí new
+- `null` (jako None v pythonu)
+- pro zkopírování existují připravené metody `CopyTo`, namísto `pole1 = pole2`, protože takhle se kopíruje reference
+
+### Pole
+
+- metody připravené:
+    - `CopyTo`
+    - `Sort`
+    - `Reverse`
+    - `BinarySearch`
+    - `Array.Reverse(aaa);`
+
+- vícerozměrné pole
+    - obdélníkové `[,]`
+    - nepravidelné `[][]`
+
+```C# pole polí
+int[][] pole = new int[3][]
+pole[0] = new int[6]
+pole[1] = new int[8]
+pole[2] = new int[2]
+```
+
+### Znakový řetězec (string)
+
+- deklarace `string str;`, string je referenční typ, alias třídy System.String
+- indexování znaků od 0
+- délka = `str.Length()`
+- pro změnu stringu je třída `StirngBuilder`
+- všechny objekty mají metodu `ToString()`
+
+## Struktura (struct)
+
+- zjednodušená třída, hodnotový typ (takže se nemusí alokovat)
+- může mít i konstruktor
+- omezení oproti třídám - nemůže dědit
+
+```C#
+struct Souradnice
+{
+    public int x,y;
+    public Souradnice(int x, int y)
+    {
+        this.x = x;
+        this.y = y;
+    }
+}
+```
+
+## Tuple - n-tice
+
+- `System.Tuple`
+    - indexují se vlastnostmi od jedničky `t.Item1` `t.Item2`
+
+```C#
+System.Tuple t = new System.Tuple<string, int, int, int, int, int>("Praha", 520, 55, 666, 856, 954);
+```
+
+nebo
+
+```C#
+System.Tuple t = System.Tuple.Create("Praha", 4561, 846, 52, 111);
+```
+
+- `System.ValueTuple`
+    - novější doporučená verze
+
+```C#
+(double, int) t = (4.5, 3);
+
+t.Item1
+t.Item2
+```
+
+```C#
+(double a, int b) t = (4.5,30);
+
+t.a
+t.b
+```
+
+# 2. Hodina
