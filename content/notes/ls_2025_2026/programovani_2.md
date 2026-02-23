@@ -47,3 +47,88 @@
 - celý program se skládá ze tříd. Je spuštěn statickou metodou main - `static void main(){}`
     - volný kód = top-level statements (ten se ale obalí v IDE zase do tříd)
 - položky deklarované ve třídě: metody (členské funkce), datové složky (členské proměnné)
+- lokálně deklarované proměnné jsou dostupné jen v blocích, kde byly deklarované
+
+## Konstanty
+
+- syntaxe stejná, co inicializované proměnné
+- `const int NUM = 15;`
+
+## Typy
+
+### Hodnotové
+- uložené rovnou v paměti
+
+- **celé číslo** `int` = `System.Int32`, tedy 32 bitů
+    - `byte`
+    - `sbyte`
+    - `short`
+    - `ushort`
+    - `uint`
+    - `long`
+    - `ulong`
+- **desetinné číslo** `double` = `System.Double`, tedy 64 bitů
+    - `float`
+    - `decimal`
+- **logická hodnota** `bool`
+- **znak** `char` = `System.Char`, 16 bitů Unicode
+- **výčtový** `enum`
+- **struktura** `struct`
+
+### Referenční
+- hodnota odkazuje jen na místo v paměti
+
+- **pole** `[]` = `System.Array`
+- **znakový řetězec** `string` = `System.String`
+- **objekt třídy** `class`
+    - `ArrayList`, `StringBuilder`, `List<>`
+
+## Aritmetické výrazy
+
+- `+` `-` `*` `/` `%`
+    - `/` může představovat desetinné i celočíselné dělení, záleží na zvoleném typu
+- `checked` a `unchecked` - určuje, zda se má kontrolovat aritmetické přetečení, zpravidla unchecked
+
+## Další syntaxe
+
+- středník `;` - ukončuje příkaz
+- čárka `,` - odděluje index v poli, parametry v funkci, deklarace více proměnných najednou
+
+### Komentáře
+
+- jednořádkové `// komentář`
+- víceřádkové `/* komentář */`
+- dokumentace (pro automatickou generaci) - `///`
+
+### Blok
+
+- `{}` - spojení více příkazů dohromady
+
+### Dosazovací příkaz
+
+- proměnná = výraz
+
+### Modifikace hodnoty
+
+- **postinkrement** - `i++`
+    - nejdříve načte hodnotu i, pak inkrementuje o 1
+```
+int i = 5;
+int x = i++; // x = 5, i = 6
+```
+
+- **preinkrement** - `++i;`
+    - nejdříve se i zvýší o 1, pak se načte hodnota i.
+```
+int i = 5;
+int x = ++i; // i = 6, x = 6
+```
+
+- **postdekrement** - `i--;`, **predekrement** - `--i;`
+- `i += 10;`
+- `i -= 10;`
+- `i *= 10;`
+- `i /= 10;`
+- `i %= 10;`
+
+### Podmíněný příkaz
