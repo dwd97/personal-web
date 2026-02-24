@@ -265,3 +265,53 @@ skupenstvi skup = skupenstvi::KAPALNE
 ```
 
 ## Pointers
+
+- číslo, které udává místo v paměti (nejnižší byte na adrese proměnné)
+
+```C++
+int a = 42; // deklaruji proměnnou
+int *pointer_of_a = &a; // uložím si adresu proměnné a do pointeru pointer_of_a
+*pointer_of_a = 88; // změním hodnotu proměnné a pomocí jeho pointeru
+```
+
+- pointer na pole/string = ukazuje na první element v poli (první char v stringu)
+
+```C++
+int hodnoty[] = {1,2,3,4}; // vytvořím hodnoty
+int *hodnoty = {1,2,3,4}; // zparsuju hodnoty na pointer
+
+char text[] = "text";
+char *text = "text";
+```
+
+**pointers calculated**
+
+```C++
+char *str = "text";
+
+for(int i = 0; i<str.Length;i++) {
+    str[i] // lepší používat tohle
+    *(str + i)
+}
+```
+
+**pointer decay**
+- při předání pole do funkce se parametr `int arr[]` stane `int* arr`. Je tedy nutné předávat velikost pole jako další parametr funkce, protože pak nelze udělat `sizeof(arr)` uvnitř funkce, protože dostanu velikost pointer, což bude 8 pokud se jedná o 64-bit architekturu CPU
+
+## References
+
+- je to jen alias pro stejnou proměnnou
+
+```C++
+int a = 42;
+int &reference_a = a; // definuji, že reference_a ukazuje na stejné místo, co a
+reference_a = 88;
+```
+
+- V C - jsou parametry funkce vždy hodnotové (V C neexistují reference), `out->x` je zkratka za `(*out).x`
+- V C++ - jsou parametry funkce hodnotové nebo referenční
+
+## Třídy
+
+- podobné strukturám, ale k proměnným přidává ještě funkce
+- enkapsulace
