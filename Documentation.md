@@ -51,7 +51,7 @@ personal-web/
 
 ## tasks
 
-- [ ] blog
+- [x] blog
   - [ ] reading time estimate
   - [ ] sharing - creating the preview when sharing
     - [ ] rss feed
@@ -62,10 +62,10 @@ personal-web/
   - [ ] last updated date (maybe release date? separate?)
   - [ ] previous and next article
   - [ ] breadcrumbs
-  - [ ] latex support
+  - [x] katex support
   - [ ] diagram support - from js code
-  - [ ] code blocks - syntax highligting
-  - [ ] table of contents - at the start or sticky
+  - [x] code blocks - syntax highligting
+  - [x] table of contents - at the start or sticky
   - [ ] email newsletter
   - [ ] back to top button at the bottom
   - [ ] edit on github link
@@ -73,8 +73,8 @@ personal-web/
   - [ ] hearts, comments, views
 - [ ] sitemap.xml
 - [ ] ssg architecture - pre rendered html
-- [ ] responsive
-- [ ] dark/light mode
+- [x] responsive
+- [x] dark/light mode
 - [ ] seo meta tags
 - [ ] canonical urls - dont have duplicates
 - [ ] sitemap.xml
@@ -83,7 +83,7 @@ personal-web/
 - [ ] social links - github, x, bluesky, linkedin, mail
 - [ ] image optimization
 - [ ] sections of the website
-  - [ ] Home
+  - [x] Home
   - [ ] Posts (sorted by year)
   - [ ] About
   - [ ] Projects
