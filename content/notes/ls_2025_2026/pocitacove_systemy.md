@@ -13,6 +13,12 @@ int main(int argc, char **argv) { // ** means pointer to a pointer
 }
 ```
 
+## Application Entry-Point
+
+- pomocí funkce `main`, return main je exit code, pokud není explicitně return, tak implicitně je `return 0` exit code
+- jednoduché: `int main() { }`
+- složitější: `int main(int argc, char *argv[]) { }`
+
 ## Literály
 
 ### Integer
@@ -189,3 +195,73 @@ end_of_loop: // something continues here
 
 ## Arrays (Pole)
 
+- sekvence objektů stejného typu
+
+```C++
+int a1[3][2] = {{3,1},{4,5},{6,5}};
+
+int a2[3]; // nahodne hodnoty
+```
+
+**Strings**
+- string je pole o velikosti vstupu + 1
+
+```C++
+char text[] = "text"; // pole velikosti 5, poslední je znak '\0' (zero) NUL character
+
+char chars[] = {'t', 'e', 'x', 't'} // pole velikosti 4
+```
+
+## Aligned/Misaligned slova
+
+- prostě proměnné o velikosti X musí být uloženy na adrese, která je dělitelná počtem bytů X
+- 64-bit long long int musí být uložen na adrese dělitné 8
+
+## Struktury (structs)
+
+- jsou data, která jsou nějak spojená
+- co se týče aligned/misaligned, tak jsou uspořádaná v paměti podle proměnné s největším slovem (outer alignment) a uvnitř jsou pak uspořádaná podle velikosti slov proměnných (inner alignment)
+
+```C++
+struct bod {
+    int x,y;
+};
+
+bod novy;
+novy.x = 1;
+novy.y = 2;
+```
+
+## Konstanty
+
+**regulární** (klasické read-only)
+- `const int konstanta = 5;`
+
+**compile-time (neexistují v paměti)**
+- `constexpr int konstanta = 5;`
+
+**enumerátory**
+- jsou efektivní, protože se převádí na `int`
+
+```C++
+enum class skupenstvi {KAPALNE, PLYNNE, PEVNE}
+
+skupenstvi skup = skupenstvi::KAPALNE
+```
+
+## Preprocessor C++
+
+- upravuje textový procesor ještě před kompilací, tedy odstraňuje komentáře, spojí řádky a zpracuje příkazy začínající `#`
+
+- typy direktiv:
+
+```C++
+#include "muj_soubor.h" // vloží obsah jiného souboru
+#include <stdio.h> //
+
+#define X 152 // raději se vyvarovat, nahradí identifikátor v kódu zadaným řetězcem, místo toho použít constexpr
+
+#ifdef, #ifndef, #if, #else, #endif // umožňuje vynechat nebo nahradit některé části kódu na základě podmínek
+```
+
+## Pointers
