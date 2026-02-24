@@ -102,4 +102,90 @@ float f = (float)d;
 **statické lokální proměnné**
 - jsou dostupné v rámci jednoho bloku/funkce, ale přežijí volání funkce, tedy nesmažou se z paměti
 
-## 
+## Příkazy (Statements)
+
+- (Compound) Složený příkaz (blok) = `{}`
+- (Expression) Jednoduchý příkaz = `příkaz ;`
+- (if) podmíněný příkaz = `if (podmínka) něco else něco_jiného`
+- (return) vrácení = `return hodnotu ;`
+
+### Switch
+
+- nepoužívat, protože se může přelít z jedné case do jiné
+
+```C++
+switch(expr)
+{
+    case 0:
+        // něco
+        break;
+    case 1:
+    case 2:
+    case 3:
+        // něco jiného
+        break;
+    default:
+        // něco
+        break;
+}
+```
+
+### Podmíněné příkazy (cykly)
+
+**while cyklus**
+- `while (expression) something`
+
+**while cyklus s alespoň jedním průchodem**
+- `do something while (expression);`
+
+**for cyklus**
+- `for (deklarace; test; end) { }`
+- `for (int i=0;i<N;i++) { }`
+
+**control flow cyklu**
+- `break;` = zruší cyklus
+- `continue;` = přeskočí konkrétní iteraci cyklu a pokračuje další
+
+**bezpodmíněčné control flow (přesměrování)**
+
+```
+if(something) goto end_of_loop; // this is inside a loop or somewhere
+
+end_of_loop: // something continues here
+```
+
+- často se nepoužívá, spíše nepěkné
+
+## Operátory
+
+**Aritmetické**
+- základní: `+` `-` `*` `/` `%`
+- inkrementace: `++` `--`
+
+**Porovnávání**
+- základní `<` `<=` `>` `>=` `==` `!=`
+
+**Bitové operace**
+- základní `~` `&` `|` `^` `<<` `>>`
+
+**Logické operace**
+- základní `&&` `||` `!`
+
+**Pointers**
+- základní `&` `*`
+
+**Přiřazovací**
+- základní `=` `+=` `-=` `*=` `/=` `%=` `&=` `|=` `^=`
+
+**Velikost v bytech**
+- `sizeof`
+
+**Ternary expression**
+- `expression ? something1 : something2`
+
+**Komentáře**
+- jednořádkový `// komentář`
+- víceřádkový `/* komentář */`
+
+## Arrays (Pole)
+
