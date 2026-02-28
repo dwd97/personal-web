@@ -111,6 +111,8 @@ mezi nejčastěji používáné patří:
     - `ls -d D*` - vypíše soubory začínající na písmeno d, ale s přepínačem -d, který zabrání, aby byl vypsán i obsah těchto souborů (adresářů)
     - `ls x?.txt` - vypíše soubory, co mají 6 znaků, tedy x_.txt, kde _ je libovolný znak
     - `ls -a ~` nebo `ls -d ~/.*` - vypíše všechny skryté soubory bez obsahu v domovském adresáři (ne root)
+    - `ls --color` zobrazí soubory barvami
+    - `ls -F` spustitelné soubory označí * a adresáře /
 - `cd` - "change directory", změní aktuální adresář na adresář daný argumentem. Např.:
     - `cd Documents` - do složky Documents
     - `cd ..` - do nadřazeného adresáře
@@ -201,4 +203,21 @@ mezi nejčastěji používáné patří:
 - jedná se o TUI editory, takže jsou vesměs dostupné v terminálu bez grafického rozhraní a tedy lze s nimi pracovat vzdáleně.
 
 # 3. Hodina
+
+## Skript
+
+- pomocí shellu, což je jazyk příkazové řádky
+- Ukládají se do souborů s příponou `.sh`, napriklad `skript.sh`
+- Následně se spouští pomocí příkazu `sh`, celý příkaz bude `sh skript.sh`. Který spustí interpretr jazyka shell.
+
+- Je potřeba specifikovat interpretr a ten se specifikuje pomocí **shebangu/hasbangu**, nebo-li `#!`
+    - Pro shellové skripty se používá `#!/bin/sh`
+    - Pro pythonové skripty se používá `#!/usr/bin/env python3`
+    - Další: `#!/bin/bash` - bash je rozšíření shellu
+
+- Pro označení souboru jako spustitelný je třeba provést `chmod +x skript.sh`, pak lze soubor spustit pomocí: `./skript.sh`
+    - Musí se použít `./`, protože se shell dívá první do `usr/bin` nebo-li `$PATH`, kde je většina spustitelných souborů a do aktuálního adresáře se nepodívá, proto je potřeba specifikovat relativní cestu
+
+- Při spuštění skriptů má proces vlastní pracovní adresář, který nijak neovlivní ostatní procesy, tedy shell uživatele pokud budu chtít ve skriptu měnit adresu.
+    - Z toho důvod je `cd` builtin funkce shellu a nejedná se o normální skript/program
 
