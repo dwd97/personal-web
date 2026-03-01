@@ -144,6 +144,7 @@ mezi nejčastěji používáné patří:
 - `echo` - vypsání řetězce na stdout (standard output)
 - `cut` - na extrahování částí z vstupu nebo souboru (tiskne části řádků)
     - `cut -d : -f 1` - spustí vstup pomocí stdin, `-d :` specifikuje delimiter `:`, na které se má text rozdělit a `-f 1` vezme první část z rozdělených úseků
+    - `-b` - ignore leading blanks
 - I/O redirection - pomocí operátoru `>`, tedy `> soubor.txt` se text nevypíše do příkazové řádky, ale do souboru `soubor.txt`. Např.: `echo Hello World > hello.txt`
     - operátor `>>` appenduje text na konec specifikovaného souboru místo přepisování/tvorby nového
     - operátor `<` umožňuje číst ze souboru na místo zapisování
@@ -151,6 +152,8 @@ mezi nejčastěji používáné patří:
     - s argumentem `-c` - vypíše i počet
 - `sort` - seřadí
     - `-n` - podle čísel, např. po `uniq -c` zavolám a předám stdout pomocí `|`
+    - `-t,` - field delimiter
+    - `-k2,2` - select fields, so selected from field 2 to field 2
 - `|` - roura, předává stdout na stdin, např.: `cat text/*.txt | sort` - seřadí obsahu textových souborů podle abecedy
 - `head -n 3` - vypíše jen první 3 řádky
 - `tail` - opak head, vypíše poslední řádky
@@ -310,3 +313,5 @@ cut -d : -f 1 | sort
 další příklady:
 - `cut -d : -f 1,3 /etc/group` - vypíše první a třetí sloupec souboru /etc/group
 - `<skore.txt tr -s ' ' | cut -d ' ' -f 2- | tr ' ' '+' | bc | paste score.txt - | tr '\t' ' '` - pomocí rour, takže -s (squeeze zredukuje mezeru na jednu), 2- je od 2. až na konec, pak nahradí mezeru za +, pak spočítá, paste pak spojí 2 vstupy po sloupcích, kde `-` znamená vzít z stdin, `tr '\t' ' '` nahradí tabulátor mezerou
+- `grep -F vendor_id /proc/cpuinfo | cut -d : -f 2 | cut -b 2- | sort | uniq` - vytiskne výrobce CPU
+- `sort -t, -k2,2n file` - seřadí podle čísel v druhém sloupic odděleném čárkou
