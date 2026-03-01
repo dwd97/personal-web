@@ -142,11 +142,38 @@ mezi nejčastěji používáné patří:
 - `\ ` - pokud použijeme soubor s mezerami v názvu, tak mezery jdou escapovat pomocí zpátečního lomítka `\`, tedy `ls tady\ je\ mezera.txt`
 - `wget [URL]` - stáhnutí souboru do aktuálního adresáře
 - `echo` - vypsání řetězce na stdout (standard output)
-- `cut` - na extrahování částí z vstupu nebo souboru
+- `cut` - na extrahování částí z vstupu nebo souboru (tiskne části řádků)
     - `cut -d : -f 1` - spustí vstup pomocí stdin, `-d :` specifikuje delimiter `:`, na které se má text rozdělit a `-f 1` vezme první část z rozdělených úseků
 - I/O redirection - pomocí operátoru `>`, tedy `> soubor.txt` se text nevypíše do příkazové řádky, ale do souboru `soubor.txt`. Např.: `echo Hello World > hello.txt`
     - operátor `>>` appenduje text na konec specifikovaného souboru místo přepisování/tvorby nového
     - operátor `<` umožňuje číst ze souboru na místo zapisování
+- `uniq` - vytiskne jen unikátní
+    - s argumentem `-c` - vypíše i počet
+- `sort` - seřadí
+    - `-n` - podle čísel, např. po `uniq -c` zavolám a předám stdout pomocí `|`
+- `|` - roura, předává stdout na stdin, např.: `cat text/*.txt | sort` - seřadí obsahu textových souborů podle abecedy
+- `head -n 3` - vypíše jen první 3 řádky
+- `tail` - opak head, vypíše poslední řádky
+    - `tail -n +2` - odstraní první řádek
+    - `tail -n 2 /etc/passwd /etc/groups` - vypíše poslední 2 řádky z obou souborů
+- `paste` - vypíše do stdout předané řádky textu z stdin
+    - `-d argument` - delimiter, přidá mezi předanými vstupy
+    - `-s` - serial, vypíše najednou, ne paralelně
+- `cp` - kopíruje soubory a adresáře
+- `bc` - kalkulátor
+- `grep` - používá se k hledání určitých informací v textu
+- `sed [path]` - na hledání a úpravů dat rychle
+- `wc` - vypíše počet řádků, slov a znaků v datech
+    - `wc -l` - vypíše počet řádků souboru v argumentu
+- `join` - spojí setříděné soubory podle společných sloupečků
+- `rev` - otočí pořadí znaků na každém řádku
+- `rm` - odstraní soubory nebo adresáře
+- `rmdir` - odstraňuje adresáře
+- `scp` - bezpečně kopíruje soubory napříč stroji
+- `tar` - archivační nástroj
+- `test` - porovnává hodnoty a rozhoduje o typech souborů
+- `tr` - přeloží (nahradí) nebo odstraní znaky (písmena)
+
 
 ### Doplnění tabulátorem
 
@@ -262,8 +289,24 @@ if __name__ == '__main__':
 
 ### Filtry
 
+- jsou vlastně příkazy na úpravu standard inputu a předání, např.: `sort`, `cut`, `cat`, `tac`, `head`, `tail`, `uniq`, `wc`, `grep`, `sed`, `nl`
 - `cut -d : -f 1 </etc/passwd` a `cut -d : -f 1 /etc/passwd` vypíšou to samé, ale první je předán text cutu pomocí shellu a musí to otevírat shell a kdyžtak nahlásit chybu, ten druhý případ se předá souboru příkazu cut a ten zpracuje soubor a řeší případné chyby
 
 ### Roury (pipes)
 
 - skládání proudových dat
+- místo toho, abych zapisoval do dočasného souboru a omlyme přepsal nějaký soubor, tak použiju `|`, což vlastně znamená, že `stdout` pošlu na `stdin`
+- `cat logs/*.csv | cut -d , -f 5 | sort | uniq -c | sort -n -r | head -n 3` - seřadí csv soubory v určitém formátu podle počtu výskytů a vypíše první 3
+- `cat logs/*.csv | cut -d , -f 5 | paste -s -d + | bc` - spočítá byty logů pomocí bc kalkulátoru a paste, který zformátuje do stdout předaný stdin
+
+- stdin je dostupný i uvnitř skriptů pro tvoření pipes
+```sh column.sh
+#!/bin/sh
+
+cut -d : -f 1 | sort
+```
+- tento skript se propojí s pipeline: `cat /etc/passwd | ./column.sh | tail -n 5`
+
+další příklady:
+- `cut -d : -f 1,3 /etc/group` - vypíše první a třetí sloupec souboru /etc/group
+- `<skore.txt tr -s ' ' | cut -d ' ' -f 2- | tr ' ' '+' | bc | paste score.txt - | tr '\t' ' '` - pomocí rour, takže -s (squeeze zredukuje mezeru na jednu), 2- je od 2. až na konec, pak nahradí mezeru za +, pak spočítá, paste pak spojí 2 vstupy po sloupcích, kde `-` znamená vzít z stdin, `tr '\t' ' '` nahradí tabulátor mezerou
