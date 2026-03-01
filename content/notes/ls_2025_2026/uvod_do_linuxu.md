@@ -122,6 +122,7 @@ mezi nejčastěji používáné patří:
 - `cat` - "concatenate" - vypíše obsah souboru, lze použít i ke spojování
     - `cat *` - vypíše obsah všech souborů
     - `cat [0-9][0-9][0-9].txt` - vypíše obsah všech souborů s názvy [000-999].txt
+- `tac` - rozšíření cat a vypíše řádky souboru obráceně
 - `hexdump` - vypíše bajty souboru v hexadecimálním tvaru
     - `hexdump -C c/image.bmp` - přepínač -C slouží k vypsání ASCII znaků vedle hexdumpu
 - `file` - slouží k zobrazení metadat k souboru jako typ souboru, u obrázku velikost atd.
@@ -140,6 +141,12 @@ mezi nejčastěji používáné patří:
     - `ls -l -h -- *.txt` - bezpečná konvence, příkaz, přepínače, ukončení přepínaču a wildcard nebo název souboru. Toto vypíše "lidsky" velikosti a názvy souborů s příponou .txt
 - `\ ` - pokud použijeme soubor s mezerami v názvu, tak mezery jdou escapovat pomocí zpátečního lomítka `\`, tedy `ls tady\ je\ mezera.txt`
 - `wget [URL]` - stáhnutí souboru do aktuálního adresáře
+- `echo` - vypsání řetězce na stdout (standard output)
+- `cut` - na extrahování částí z vstupu nebo souboru
+    - `cut -d : -f 1` - spustí vstup pomocí stdin, `-d :` specifikuje delimiter `:`, na které se má text rozdělit a `-f 1` vezme první část z rozdělených úseků
+- I/O redirection - pomocí operátoru `>`, tedy `> soubor.txt` se text nevypíše do příkazové řádky, ale do souboru `soubor.txt`. Např.: `echo Hello World > hello.txt`
+    - operátor `>>` appenduje text na konec specifikovaného souboru místo přepisování/tvorby nového
+    - operátor `<` umožňuje číst ze souboru na místo zapisování
 
 ### Doplnění tabulátorem
 
@@ -221,3 +228,42 @@ mezi nejčastěji používáné patří:
 - Při spuštění skriptů má proces vlastní pracovní adresář, který nijak neovlivní ostatní procesy, tedy shell uživatele pokud budu chtít ve skriptu měnit adresu.
     - Z toho důvod je `cd` builtin funkce shellu a nejedná se o normální skript/program
 
+### Argumenty příkazové řádky (Python)
+
+- pomocí `import sys` a argumenty jsou ve formátu `'-d'`, `'argument2'` ...
+
+```Python
+#!/usr/bin/env python3
+
+import sys
+
+def main():
+    for arg in sys.argv:
+        print(arg)
+
+if __name__ == '__main__':
+    main()
+```
+
+### Stdout, Stdin
+
+- jsou knihovny pro čtení a vypisování. V pythonu je k nim možné přistoupit přes `import sys.stdin` a nebo `import sys.stdout`
+    - pak se používají pomocí `sys.stdin.readline()` a nebo pro čtení více řádek: `for line in sys.stdin`
+    - nemusí se soubor uzavírat, protože se uzavře sám po dokončení přístupu
+- např.: při použití `cut -d : -f 1` se spustí stdin a ukončí se `Ctrl+D`, což je něco jiného než `Ctrl+C`
+
+
+#### I/O redirection
+
+- low-level přesměrování výstupu pomocí argumentu `> soubor.txt`, ale tohle se nepředává v sys.argv, nemusí o tom program vědět
+- soubor se přepíše a nelze obnovit, proto se doporučuje používat `Tab` pro zjištění zda daný souboru už existuje
+- příklad: `cat 1.txt 2.txt > 12.txt`
+- příklad č.2: `tac 1.txt 2.txt > 2.txt` (při přesměrování na úrovni shellu se souboru 2.txt smaže, takže se uloží jen opačné pořadí souboru 1.txt do 2.txt)
+
+### Filtry
+
+- `cut -d : -f 1 </etc/passwd` a `cut -d : -f 1 /etc/passwd` vypíšou to samé, ale první je předán text cutu pomocí shellu a musí to otevírat shell a kdyžtak nahlásit chybu, ten druhý případ se předá souboru příkazu cut a ten zpracuje soubor a řeší případné chyby
+
+### Roury (pipes)
+
+- skládání proudových dat
