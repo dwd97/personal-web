@@ -18,6 +18,9 @@ int main(int argc, char **argv) { // ** means pointer to a pointer
 - pomocí funkce `main`, return main je exit code, pokud není explicitně return, tak implicitně je `return 0` exit code
 - jednoduché: `int main() { }`
 - složitější: `int main(int argc, char *argv[]) { }`
+    - `int argc` - říká kolik je argumentů (první argument je cesta, ta se většinou přeskakuje)
+    - `char *argv[]` - argumenty z příkazové řádky
+- nelze mít top-level statementy
 
 ## Literály
 
@@ -205,6 +208,7 @@ int a2[3]; // nahodne hodnoty
 
 **Strings**
 - string je pole o velikosti vstupu + 1
+- používají se ascii znaky
 
 ```C++
 char text[] = "text"; // pole velikosti 5, poslední je znak '\0' (zero) NUL character
@@ -216,11 +220,12 @@ char chars[] = {'t', 'e', 'x', 't'} // pole velikosti 4
 
 - prostě proměnné o velikosti X musí být uloženy na adrese, která je dělitelná počtem bytů X
 - 64-bit long long int musí být uložen na adrese dělitné 8
+- `alignof(T)` - vypíše alignment of type T
 
 ## Struktury (structs)
 
-- jsou data, která jsou nějak spojená
-- co se týče aligned/misaligned, tak jsou uspořádaná v paměti podle proměnné s největším slovem (outer alignment) a uvnitř jsou pak uspořádaná podle velikosti slov proměnných (inner alignment)
+- jsou data, která jsou nějak spojená, používají se pak jako datový typ např.: `bod novy;`
+- co se týče aligned/misaligned, tak jsou uspořádaná v paměti podle proměnné s největším slovem (outer alignment) a uvnitř jsou pak uspořádaná podle velikosti slov proměnných (inner alignment) - `offsetof(bod, x)` - vypíše offset od kterého je to uložené, např. x bude mít 0 a y 4, protože je od 5. bytu
 
 ```C++
 struct bod {
@@ -239,9 +244,11 @@ novy.y = 2;
 
 **compile-time (neexistují v paměti)**
 - `constexpr int konstanta = 5;`
+- jsou nahrazeny kompilátorem, ale po kontrole
 
 **enumerátory**
 - jsou efektivní, protože se převádí na `int`
+- pro příklad níže lze napsat `::`, což znamená, že KAPALNE patří do scope-u této proměnné
 
 ```C++
 enum class skupenstvi {KAPALNE, PLYNNE, PEVNE}
@@ -257,11 +264,11 @@ skupenstvi skup = skupenstvi::KAPALNE
 
 ```C++
 #include "muj_soubor.h" // vloží obsah jiného souboru
-#include <stdio.h> //
+#include <stdio.h> // nahraje standarní knihovny
 
-#define X 152 // raději se vyvarovat, nahradí identifikátor v kódu zadaným řetězcem, místo toho použít constexpr
+#define X 152 // raději se vyvarovat, nahradí identifikátor v kódu zadaným řetězcem, místo toho použít constexpr, kde jsou kontroly
 
-#ifdef, #ifndef, #if, #else, #endif // umožňuje vynechat nebo nahradit některé části kódu na základě podmínek
+#ifdef, #ifndef, #if, #else, #endif // umožňuje vynechat nebo nahradit některé části kódu na základě podmínek, pro multiplatformní knihovny
 ```
 
 ## Pointers
@@ -305,7 +312,7 @@ for(int i = 0; i<str.Length;i++) {
 ```C++
 int a = 42;
 int &reference_a = a; // definuji, že reference_a ukazuje na stejné místo, co a
-reference_a = 88;
+reference_a = 88; // není třeba dereferencovat
 ```
 
 - V C - jsou parametry funkce vždy hodnotové (V C neexistují reference), `out->x` je zkratka za `(*out).x`
@@ -315,3 +322,16 @@ reference_a = 88;
 
 - podobné strukturám, ale k proměnným přidává ještě funkce
 - enkapsulace
+
+```cpp Trida
+class Trida {
+    public:
+        Trida(): promenna(0) {}
+        void funkce(int cislo) { promenna = a; }
+        int dostan_promennou() const {
+            return promenna;
+        }
+    private:
+        int promenna;
+}
+```

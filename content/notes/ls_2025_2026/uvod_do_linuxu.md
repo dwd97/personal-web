@@ -82,6 +82,7 @@ mezi nejčastěji používáné patří:
 
 - `[intro@localhost] ~` je prompt. A `~` odkazuje na domovský adresář, ale ten může být delší. V domovském adresáři se ukládají všechny soubor uživatele včetně nastavení prostředí jako `.config`.
 - **Shell** - zobrazuje výzvu a jedná se o plnohodnotný programovací jazyk. Shell je program běžící uvnitř terminálu (emulátoru terminálu).
+- `etc/pass` - adresář sloužící ke konfiguraci Linuxu
 
 ### Zkratky/Používání
 
@@ -176,6 +177,9 @@ mezi nejčastěji používáné patří:
 - `tar` - archivační nástroj
 - `test` - porovnává hodnoty a rozhoduje o typech souborů
 - `tr` - přeloží (nahradí) nebo odstraní znaky (písmena)
+- `who` - vypíše 2 přihlášené uživatele, druhý se právě přihlásil do GUI a první do CLI
+- `whoami` - vypíše, kdo je přihlášen
+- `export` - vypíše dočasné proměnné
 
 
 ### Doplnění tabulátorem
