@@ -319,3 +319,5 @@ další příklady:
 - `<skore.txt tr -s ' ' | cut -d ' ' -f 2- | tr ' ' '+' | bc | paste score.txt - | tr '\t' ' '` - pomocí rour, takže -s (squeeze zredukuje mezeru na jednu), 2- je od 2. až na konec, pak nahradí mezeru za +, pak spočítá, paste pak spojí 2 vstupy po sloupcích, kde `-` znamená vzít z stdin, `tr '\t' ' '` nahradí tabulátor mezerou
 - `grep -F vendor_id /proc/cpuinfo | cut -d : -f 2 | cut -b 2- | sort | uniq` - vytiskne výrobce CPU
 - `sort -t, -k2,2n file` - seřadí podle čísel v druhém sloupic odděleném čárkou
+
+# 4. Hodina

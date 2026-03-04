@@ -371,3 +371,107 @@ t.b
 ```
 
 # 2. Hodina
+
+- `Ctrl + R + R` - přejmenování proměnné v Visual Studio
+
+- `this` - něco jako self v Pythonu
+
+- virtual (late-binding) - napsání override místo new v stejné funkci při dědění
+
+## Objekty
+
+- způsob jak izolovat části kódů
+- objekt sdružuje data a kód
+- object je instance třídy
+
+### Konstruktor
+
+- metoda, co se zavolá při vytváření instance objektu (třídy)
+- třída může mít více instruktorů, ale musí se lišit parametry
+
+### Dědičnost
+
+- odvozený datový typ (nebo-li potomek), co dědí od svého rodiče
+    - zdědí všechny **datové složky** a **metody**
+    - může přidávat datové složky a metody
+    - může přepisovat metody
+
+- `new` - pro předefinování metody
+- `base` - pro volání metody předka
+    - konstruktor předka se zavolá automaticky před vlastním konstruktorem (v Pythonu to tak není).
+
+```C# dedicnost.cs
+using System;
+
+namespace Dedicnost {
+    class Rodic {
+        protected string jmeno;
+        private int vyska;
+        private int vek;
+
+        public Rodic(string jmeno, int vyska, int vek ) {
+            this.jmeno = jmeno;
+            this.vyska = vyska;
+            this.vek = vek;
+        }
+
+        public void RekniJmeno() {
+            Console.WriteLine($"{this.jmeno}");
+        }
+
+        public virtual void RekniJmenoVirtual() {
+            Console.WriteLine($"{this.jmeno}");
+        }
+    }
+    class Potomek : Rodic {
+        public Potomek(string jmeno, int vyska, int vek) : base(jmeno, vyska, vek) {}
+
+        public new void RekniJmeno() {
+            Console.WriteLine($"Já jsem {jmeno}");
+        }
+
+        public void RekniJmenoPredka() {
+            base.RekniJmeno();
+        }
+
+        public void RekniJmeno2X() {
+            RekniJmeno();
+            RekniJmeno();
+        }
+
+        public override void RekniJmenoVirtual() {
+            Console.WriteLine($"Já jsem {jmeno}");
+        }
+
+        public void RekniJmenoVirtual2X() {
+            RekniJmenoVirtual();
+            RekniJmenoVirtual();
+        }
+    }
+    class Main {
+        static public void main(string[] args) {
+            Potomek potomek = new Potomek("Harold", 5, 5);
+            potomek.RekniJmeno(); // Ja jsem Harold
+            potomek.RekniJmenoPredka(); // Harold
+            potomek.RekniJmeno2X(); // Harold /r/n Harold (jen /n na Linux a Mac)
+            potomek.RekniJmenoVirtual2X(); // Já jsem Harold /r/n Já jsem Harold
+        }
+    }
+}
+```
+
+### Obyčejné a virtuální metody
+
+- řeší ten problém, že když definuji metodu `RekniJmeno2x`, která volá např. metodu `RekniJmeno`, tak zavolá předchozí metodu rodiče, než přepsanou metodu pomocí `new`, protože metody jsou defaultně obyčejné, tedy early-binding (v Pythonu to je naopak, tam jsou metody virtuální, late-binding)
+
+- **Obyčejné**
+    - o jejich volání se rozhoduje při překladu kódu = early-binding
+    - defaultní nastavení C#
+- **Virtuální**
+    - o jejich volání  se rozhodne, až v okamžiku volání
+    - používá se pro deklaraci `virtual` a pro přepsání `override`
+    - `public virtual void RekniJmeno()` - pokud se v potomku použije `virtual` místo `override`, tak se založí nový kořen, nepřepisuje se stará metoda
+
+### Tabulka virtuálních metod
+
+- Každá třída má VMT
