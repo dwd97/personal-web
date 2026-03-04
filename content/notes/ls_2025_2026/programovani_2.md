@@ -474,4 +474,178 @@ namespace Dedicnost {
 
 ### Tabulka virtuálních metod
 
-- Každá třída má VMT
+- Každá třída má VMT = Virtual Method Table
+- Je to tabulka obsahující adresy virtuálních metod
+
+- zavolá se metoda při zavolání funkce, např. `p.RekniJmeno();`
+
+```C# VMT.cs
+using System;
+
+namespace VMT {
+    class Rodic {
+        protected jmeno;
+
+        public Rodic(string jmeno) {
+            this.jmeno = jmeno;
+        }
+
+        public virtual void RekniJmeno() {
+            Console.WriteLine($"{jmeno}");
+        }
+    }
+
+    class Potomek : Rodic {
+        public void Potomek(string jmeno) : base (jmeno) {}
+
+        public virtual void RekniJmeno() {
+            Console.WriteLine($"Já jsem {jmeno}");
+        }
+    }
+
+    class Main {
+        public static void main(string[] args) {
+            Rodic r = new Rodic("Lord Eddard Ned Stark");
+
+            r.RekniJmeno(); // Lord Eddard Ned Stark
+
+            r = new Potomek();
+
+            r.RekniJmeno(); // Já jsem Lord Eddard Ned Stark
+        }
+    }
+}
+```
+
+```
+VMT Rodic
+---------------
+RekniJmeno -> Rodic.RekniJmeno
+
+
+VMT Potomek
+---------------
+RekniJmeno -> Potomek.RekniJmeno
+```
+
+Celkově situace, co mohou nastat:
+
+1. nevirtuální metody
+    - nejsou ve VMT
+```C#
+class Pes {
+    public void Stekni() {
+        Console.WriteLine("Pes");
+    }
+}
+
+class VelkyPes : Pes {
+    public void Stekni() {
+        Console.WriteLine("VelkyPes");
+    }
+}
+
+Pes p = new VelkyPes();
+p.Stekni(); // Pes
+```
+
+2. Virtuální metoda + override
+    - objekt je VelkyPes, takže použije VMT VelkyPes
+```C#
+class Pes {
+    public virtual void Stekni() {
+        Console.WriteLine("Pes");
+    }
+}
+
+class VelkyPes {
+    public override void Stekni() {
+        Console.WriteLine("VelkyPes");
+    }
+}
+
+Pes p = new VelkyPes();
+p.Stekni(); // VelkyPes
+```
+
+3. Virtual bez override
+    - nový kořen
+```C#
+class Pes {
+    public virtual void Stekni() {
+        Console.WriteLine("Pes");
+    }
+}
+
+class VelkyPes {
+    public virtual void Stekni() {
+        Console.WriteLine("VelkyPes");
+    }
+}
+
+Pes p = new VelkyPes();
+p.Stekni(); // Pes
+```
+
+4. metoda new
+    - nejedná se o override
+```C#
+class Pes {
+    public virtual void Stekni() {
+        Console.WriteLine("Pes");
+    }
+}
+
+class VelkyPes : Pes {
+    public new void Stekni() {
+        Console.WriteLine("VelkyPes");
+    }
+}
+
+Pes p = new VelkyPes();
+p.Stekni(); // Pes
+```
+
+5. override + base
+    - base volá přímo rodiče
+```C#
+class Pes {
+    public virtual void Stekni() {
+        Console.WriteLine("Pes");
+    }
+}
+
+class VelkyPes : Pes {
+    public override void Stekni() {
+        base.Stekni();
+        Console.WriteLine("VelkyPes");
+    }
+}
+
+Pes p = new VelkyPes();
+p.Stekni(); // Pes /n Velky Pes
+```
+
+6. virtuální metoda volaná z rodiče
+    - protože Stekni je virtuální, tak volání jde přes VMT
+```C#
+class Pes {
+
+    public virtual void Stekni() {
+        Console.WriteLine("Pes");
+    }
+
+    public void Mluv() {
+        Stekni();
+    }
+}
+
+class VelkyPes : Pes {
+    public override void Stekni() {
+        Console.WriteLine("VelkyPes");
+    }
+}
+
+Pes p = new VelkyPes();
+p.Mluv(); // VelkyPes
+```
