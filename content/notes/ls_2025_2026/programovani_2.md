@@ -649,3 +649,169 @@ class VelkyPes : Pes {
 Pes p = new VelkyPes();
 p.Mluv(); // VelkyPes
 ```
+
+
+7. více úrovní dědičnosti
+
+```C#
+class A {
+    public virtual void M() { Console.WriteLine("A");}
+}
+
+class B : A {
+    public override void M() {Console.WriteLine("B");}
+}
+
+class C : B {
+    public override void M() {Console.WriteLine("C");}
+}
+
+A x = new C();
+x.M(); // C
+```
+
+- Zjištění metody pomocí VMT
+    - `Pes p = new VelkyPes()` a `p.Stekni()`
+        1. je metoda virtual? NE -> rozhoduje typ proměnné (Pes), ANO -> rozhoduje typ objektu (VelkyPes)
+        2. Stačí najít nejnižší override
+
+### Abstraktní třída
+- **abstraktní třída**
+    - nevytváří se od ní instance
+- **abstraktní metoda**
+    - je virtuální
+    - slouží jen k tomu, aby ji potomci předefinovali
+    - nelze volat tato metoda (metoda předka)
+
+```C#
+abstract class Pes {
+    public abstract void Stekni() {
+
+    }
+}
+
+class VelkyPes : Pes {
+    public override void Stekni() {
+        Console.WriteLine("VelkyPes");
+    }
+}
+```
+
+### Statické členy a třídy
+
+- **statické členy**
+    - statické metody, proměnné, funkce ...
+    - jsou alokovány ve třídě a ne v instanci
+    - jsou dostupné pomocí jména třídy
+    - statické členy mohou být i v nestatické třídě
+
+- **statická třída**
+    - obsahuje pouze statické členy
+    - nelze vytvořit pomocí new
+    - nelze z ní dědit
+
+```C#
+class Pes
+{
+    public static int PocetPsu = 0;
+
+    public Pes()
+    {
+        PocetPsu++;
+    }
+}
+
+Pes p1 = new Pes();
+Pes p2 = new Pes();
+
+Console.WriteLine(Pes.PocetPsu);
+```
+
+### Atributy přístupnosti nebo viditelnosti
+
+- `public` - přístup odkudkoliv
+- `private` - pouze uvnitř té samé třídy, je to default pro členy ve třídě
+- `protected` - v této třídě a potomcích
+
+```C#
+class Pes
+{
+    protected int vek;
+}
+
+class VelkyPes : Pes
+{
+    void Test()
+    {
+        vek = 5;
+    }
+}
+```
+
+- `internal` - přístupný jen uvnitř jednoho assembly projektu, jako jeden DLL/EXE
+- `protected internal` - přístupný v potomkovi ve stejném projektu
+
+### Zapouzdření (Encapsulation)
+
+- data jsou skrytá a dostupná jen přes metody, proto je nikdo nemůže náhodně změnit
+
+```C#
+class BankAccount
+{
+    private int balance;
+
+    public void Deposit(int x)
+    {
+        balance += x;
+    }
+    public int Balance{
+        get {return balance;}
+    }
+}
+```
+
+### Properties (vlastnosti)
+
+- metoda, co spravuje proměnnou pomocí `get` a `set`
+
+```C#
+class Pes {
+    private int vek;
+
+    public int Vek {
+        get{return vek;}
+        set{vek = value;}
+    }
+}
+```
+
+```C#
+class Pes {
+    private int vek;
+
+    public int Vek {get; set;} // vytvoří skryté pole automaticky
+}
+```
+
+### Sealed
+
+- **`sealed class`**
+    - nelze z ní dědit
+- **`sealed metoda`**
+    - používá se společně s `override`, další potomek ji pak už nemůže přepsat
+
+```C#
+class A {
+    public virtual void M() {}
+}
+
+class B : A{
+    public sealed override void M() {}
+}
+
+// může ji skrýt pomocí new, ale ne override, protože byla sealed
+class C : B {
+    public new void M() {}
+}
+```
+
