@@ -430,3 +430,65 @@ git clone ...
     - nepřesměrovává se spolu s `stdout` pomocí příkazu `>`
 
 ## Deskriptory souborů
+
+- je to číslo otevřeného souboru, proto se musí soubory otevírat před tím, než se do nich zapisuje nebo se něco vypisuje
+- je to identifikátor, který si operační systém udržuje v tabulce otevřených souborů a volají se pomocí nich syscall
+- 0,1,2 je popořadě systdin, systdou, systderr v deskriptorech a syscallech
+
+- lze přesměrovat stderr pomocí 2
+    - např. neexistuje adresář nonexistent.txt `cat one.txt nonexistent.txt two.txt > merged.txt 2>err.txt`
+
+## Obecné přesměrování
+
+- `>&2` - přesměruje stdout na stderr
+    - např. pokud nechceme vypsat všechny detaily při použití `wget`
+
+- `>output.txt 2>&1` nebo `&>output.txt` - přesměrování stdout a stderr do jednoho souboru, `2>&1` říká tam, kam jde stdout
+    - `>output.txt 2>output.txt` nefunguje, protože shell musí otevřít soubor dvakrát
+
+### Speciální soubory
+
+- `/dev/null`
+    - `cat one.txt > /dev/null` - `/dev/null` je speciální typ souboru, kam lze něco přesměrovat, pokud nás to nezajímá
+
+- `/dev/full`
+    - simuluje disk, co je plný a vždy vrátí chybu při zápisu
+
+- `/dev/stdin`
+    - reprezentuje file descriptor 0, tedy stdin, v programech se dá zaměňovat často za `-`
+    - `./funkce.py /dev/stdin one.txt < two.txt` - přesměruje složený one.txt a two.txt na stdin pro python program, two.txt je složený přes OS
+
+- `/dev/stdout`
+    - pokud program chce zapisovat do souboru, ale ty mu hodíš `/dev/stdout`, což přesměruje na výstup
+
+### Návratová hodnota programu (exit code)
+
+- `0` signalizuje úspěch, jakékoliv jiné číslo neúspěch
+
+## Nastavení selhávání
+
+- začít příkaz pomocí těchto zkratek:
+    - `set -o pipefail` - chyba kterékoliv části pipeline způsobí ukončení celé pipeline
+    - `set -e` - ukončení programu v případě chyby
+    - `set -u` - ukončení skriptu v případě neinicializované proměnné
+    - společně: `set -ueo pipefail` - dobrá praxe začínat každý skript tímhl příkazem
+
+- `set -ueo pipefail cat /dev/urandom | head -n 1 | hexdump` - cat ukončí s chybou kvůli `set -o pipefail`, protože cat vypisuje, ale head ukončí příkaz jakmile vypíše jeho počet řádků a další nečtě, ale cat dál vypisuje, takže to, že to nikdo nečte se naštve a ukončí program, pomocí `||` tomu lze zamezit před head
+
+## Přizpůsobení shellu
+
+### Aliasy
+
+- je to definování příkazů bez vytváření skriptů
+- `alias l='ls -l -h'` - definuje nový příkaz l
+    - ale jen na dobu běhu shellu, pak se přepíšou
+
+- dají se nadefinovat v konfiguračním souboru shellu, např. `~/.bashrc`
+
+### Nastavení promptu
+
+- `PS1=''` - nastaví prompt na prázdný
+- `PS1='Prikazy:'`
+- `PS1='\u: \w '` - jméno uživatele a aktuální adresář
+
+- lze měnit i barva, přidat datum pomocí `$( date )`
