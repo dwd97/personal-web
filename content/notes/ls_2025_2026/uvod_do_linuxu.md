@@ -321,3 +321,4 @@ další příklady:
 - `sort -t, -k2,2n file` - seřadí podle čísel v druhém sloupic odděleném čárkou
 
 # 4. Hodina
+
