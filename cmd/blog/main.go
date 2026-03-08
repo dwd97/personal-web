@@ -60,23 +60,42 @@ func (r *ImageLinkRenderer) RegisterFuncs(reg renderer.NodeRendererFuncRegistere
 	reg.Register(ast.KindImage, r.renderImageWithLink)
 }
 
-func (r *ImageLinkRenderer) renderImageWithLink(w util.BufWriter, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
+func (r *ImageLinkRenderer) renderImageWithLink(
+	w util.BufWriter,
+	source []byte,
+	node ast.Node,
+	entering bool,
+) (ast.WalkStatus, error) {
+
 	if !entering {
 		return ast.WalkContinue, nil
 	}
 
 	n := node.(*ast.Image)
 	src := string(n.Destination)
+	alt := string(n.Text(source))
 
-	// Create the WebP path
+	// If image is external (http/https) just render normally
+	if strings.HasPrefix(src, "http://") || strings.HasPrefix(src, "https://") {
+		w.WriteString(`<img src="` + src + `" alt="` + alt + `" loading="lazy">`)
+		return ast.WalkSkipChildren, nil
+	}
+
 	ext := filepath.Ext(src)
+
+	// If no extension, render normally
+	if ext == "" {
+		w.WriteString(`<img src="` + src + `" alt="` + alt + `" loading="lazy">`)
+		return ast.WalkSkipChildren, nil
+	}
+
+	// WebP fallback for local images
 	webpSrc := strings.TrimSuffix(src, ext) + ".webp"
 
 	w.WriteString(`<a href="` + src + `" class="img-expand-link">`)
 	w.WriteString(`<picture>`)
-	// The browser will try webp first, but fall back to the png/jpg immediately if it fails
 	w.WriteString(`<source srcset="` + webpSrc + `" type="image/webp">`)
-	w.WriteString(`<img src="` + src + `" alt="` + string(n.Title) + `" loading="lazy" onerror="this.parentElement.querySelector('source').remove();">`)
+	w.WriteString(`<img src="` + src + `" alt="` + alt + `" loading="lazy" onerror="this.parentElement.querySelector('source').remove();">`)
 	w.WriteString(`</picture>`)
 	w.WriteString(`</a>`)
 
