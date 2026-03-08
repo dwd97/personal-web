@@ -19,6 +19,7 @@ import (
 	"github.com/yuin/goldmark/ast"
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/renderer"
+	"github.com/yuin/goldmark/renderer/html"
 	"github.com/yuin/goldmark/util"
 )
 
@@ -447,9 +448,11 @@ func markdownToHTML(content string) string {
 	md := goldmark.New(
 		goldmark.WithExtensions(
 			extension.GFM,
-			mathjax.MathJax, // Ujisti se, že používáš verzi, která podporuje $
+			mathjax.MathJax,
 		),
 		goldmark.WithRendererOptions(
+			// Add this line to allow raw HTML tags
+			html.WithUnsafe(),
 			renderer.WithNodeRenderers(
 				util.Prioritized(&CodeBlockRenderer{}, 100),
 				util.Prioritized(&ImageLinkRenderer{}, 99),
