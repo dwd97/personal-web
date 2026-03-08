@@ -155,6 +155,7 @@ mezi nejčastěji používáné patří:
     - `-n` - podle čísel, např. po `uniq -c` zavolám a předám stdout pomocí `|`
     - `-t,` - field delimiter
     - `-k2,2` - select fields, so selected from field 2 to field 2
+    - `sort -n -k 2 -r` - tohle řadí podle čísel ve druhém sloupci v opačném pořadí
 - `|` - roura, předává stdout na stdin, např.: `cat text/*.txt | sort` - seřadí obsahu textových souborů podle abecedy
 - `head -n 3` - vypíše jen první 3 řádky
 - `tail` - opak head, vypíše poslední řádky
@@ -322,3 +323,110 @@ další příklady:
 
 # 4. Hodina
 
+- `git` je verzovací nástroj
+
+- výběr editoru. Přidáním `export EDITOR=mcedit` nebo jiného editoru (např. vim, nano ...) na konec souboru `~/.bashrc`
+    - pak lze spustit (po restartu terminálu) `$EDITOR ~/.bashrc` a tím se spustí daný editor se souborem `~/.bashrc`
+    - takhle se nastavila proměnná prostředí EDITOR (používají ji ostatní programy k funkci)
+    - TUI editory jsou superior od GUI, protože např. při psaní commit zprávy se správně zpracuje instance a nepošle se prázdný commit
+
+## Příkaz git
+
+- píše se vždy ve formě `git podprikaz --help`. Takže `git`, pak podpříkaz (např. `config`, `commit`) a pak parametry a nakonec data
+    - podpříkazů je hodně (cca 100), ale většinou stačí jen asi méně než 20
+
+### Nastavení Gitu
+
+- každý commit má autora, proto je potřeba nastavit prostředí
+    - přepínač `--global` znamená, že nastavení platí pro všechny gitové projekty
+
+```sh
+git config --global user.name "My Real Name"
+git config --global user.email "My E-mail"
+```
+- lze použít i bez přepínače `--global`, nastaví identifikaci jen lokálně, např. pro odlišení identit
+
+### Git init
+
+- `git init` - vytvoří prázdný lokální repozitář gitu, lze později propojit se vzdáleným
+
+### Git clone
+
+- klon projektu je tzv. **Pracovní kopie** nebo-li **Working Copy**, je to 1:1 kopie a lze projekt na GitLabu obnovit z této kopie
+    - nekopíruje se wiki, issues, ty nejsou verzované gitem
+
+- `git clone` - příkaz na zkopírování a vytvoření **working copy**
+
+- nastavení přihlášení se dá obnovit pomocí:
+```sh
+export GIT_ASKPASS=""
+export SSH_ASKPASS=""
+git clone ...
+```
+
+### Git status
+
+- `git status` - vypíše aktuální změny lokálně oproti projektu v GitLabu
+    - **Changes not staged for commit** = vidím změny v souborech
+    - **Untracked files** = nové soubory (nevypisují se všechny soubory adresářů)
+
+### Git diff
+
+- `git diff` - zobrazí změny v souborech
+    - `@@ -3,3 +3,5 @@` - změny v řádcích
+        - `-3,3` - stará verze je od řádku 3 do řádku 3
+        - `+3,5` - nová verze je od řádku 3 do řádku 5
+    - `+ nějaký text` - přidaná řádka
+    - `- nějaký text` - odebraná řádka
+
+### Git add
+
+- přidání do stagingu (tedy zahrnutí do další verze commitu)
+- `git add`
+    - `git add .` - přidá všechny soubory
+    - `git add adresar/soubor.txt` - přidání určitého souboru
+
+- v `git status` se to projeví tím, že se dané změny přesunou do sekce **Changes to be commited**
+
+### Git commit
+
+- `git commit` - otevře příslušný editor, kam se napíše commit zpráva a tím se vyčistí změny a může se pracovat na další změně
+    - `git commit -m "příslušný commit název"` - rovnou nastaví zprávu commitu, `-m` znamená message
+
+- `git status` v tomhle případě napíše **Your branch is ahead of 'origin/master' by 1 commit**, proto je potřeba změny poslat na server
+
+### Git push
+
+- `git push` - nahraje všechny změny na server
+
+### Git log
+
+- `git log` - vypíše všechny commity
+- `git log --oneline` - vypíše všechny commity kompaktně
+- `git log --max-count=20 --oneline` - jen 20 posledních kompaktně
+    - lze použít `git ls` po nakonfigurování `git config --global alias.ls 'log --max-count=20 --oneline'`
+    - další `ll = log --format='tformat:%C(yellow)%h%Creset %an (%cr) %C(yellow)%s%Creset' --max-count=20 --first-parent`
+
+### Git pull
+
+- `git pull` - stáhne změny ze serveru, dokáže začlenit změny z GitLabu a na lokálním repozitáři
+
+- práci začít `git pull` a skončit `git push`
+
+## Použití jiných interpretrů
+
+- do shebangů lze napsat jiné soubory a ty se spustí, např. `#!/bin/cat` nebo i vlastní soubor v pythonu, ale absolutní cestou
+    - lze vlastně vypustit příponu souboru
+
+- např. my-cat má obsah jen `#!/bin/cat` a my-echo jen `#!/bin/echo`, pak `./my-cat my-echo` spustí vlastně složení: `/bin/cat my-cat my-echo`
+
+- pro úkoly (testy) lze spustit: `./bin/run_tests.sh` či jeho podmnožina `./bin/run_tests.sh 04` ...
+
+## Přesměrování vstupu a výstupu
+
+### Standardní chybový výstup
+
+- v případě, že například soubor neexistuje, tak místo toho, aby se chybová hláška dostala do `stdin` programu, tak se pošle pomocí `stderr` (standard error [output])
+    - nepřesměrovává se spolu s `stdout` pomocí příkazu `>`
+
+## Deskriptory souborů
