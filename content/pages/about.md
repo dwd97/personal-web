@@ -10,18 +10,20 @@ I build apps, write about math and programming.
 <script src="https://unpkg.com/cal-heatmap/dist/cal-heatmap.min.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/cal-heatmap/dist/cal-heatmap.css">
 
-<div class="code-scroll" style="margin: 28px 0;">
-  <div id="todo-heatmap" style="min-width: 780px;"></div>
+<div id="heatmap-scroll-wrapper" style="overflow-x: auto; overflow-y: hidden; padding-bottom: 15px; margin: 28px 0; scrollbar-width: thin;">
+  <div id="todo-heatmap" style="min-width: 800px;"></div>
 </div>
 
 <script>
   let cal = new CalHeatmap();
-  const today = new Date();
-  const startDate = new Date(today.getFullYear(), today.getMonth() - 11, 1);
 
-function renderHeatmap() {
+  function renderHeatmap() {
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
     const emptyColor = isDark ? '#161b22' : '#ebedf0';
+
+    // Strictly align the start date to the 1st of the month, 12 months prior
+    const today = new Date();
+    const startDate = new Date(today.getFullYear(), today.getMonth() - 12, 1);
 
     cal.paint({
       itemSelector: '#todo-heatmap',
@@ -37,7 +39,7 @@ function renderHeatmap() {
         height: 11, 
         gutter: 4 
       },
-      range: 12,
+      range: 13, // 12 historical months + the current active month
       date: { start: startDate },
       data: { 
         source: '/habits.json', 
@@ -53,25 +55,19 @@ function renderHeatmap() {
         }
       }
     }).then(() => {
-      // Execute scroll alignment post-render
-      const heatmapContainer = document.getElementById('todo-heatmap');
-      const scrollWrapper = heatmapContainer.parentElement;
-      
+      // Execute scroll alignment post-render to display the rightmost edge
+      const scrollWrapper = document.getElementById('heatmap-scroll-wrapper');
       if (scrollWrapper) {
-        // Force the scrollbar to the maximum right position
         scrollWrapper.scrollLeft = scrollWrapper.scrollWidth;
       }
     });
   }
 
-  // Initial execution
   renderHeatmap();
 
-  // Mutation observer for dynamic theme switching
   const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
       if (mutation.attributeName === 'data-theme') {
-        // Destroy existing instance, then create a new one
         cal.destroy().then(() => {
           cal = new CalHeatmap();
           renderHeatmap();
