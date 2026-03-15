@@ -30,6 +30,14 @@ I build apps, write about math and programming.
       x: 'date',
       y: 'value'
     },
-    theme: 'light' // Change to 'dark' if your site uses a dark theme
+    // Add the scale configuration here
+    scale: {
+      color: {
+        type: 'threshold',
+        range: ['#ebedf0', '#39d353'], // 0 renders as #ebedf0 (empty), 1 renders as #39d353 (green)
+        domain: [1] 
+      }
+    },
+    theme: 'light'
   });
 </script>
