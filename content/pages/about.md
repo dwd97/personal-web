@@ -15,12 +15,11 @@ I build apps, write about math and programming.
 </div>
 
 <script>
-  const cal = new CalHeatmap();
+  let cal = new CalHeatmap();
   const today = new Date();
   const startDate = new Date(today.getFullYear(), today.getMonth() - 11, 1);
 
-  function renderHeatmap() {
-    // Read the current DOM attribute state
+function renderHeatmap() {
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
     const emptyColor = isDark ? '#161b22' : '#ebedf0';
 
@@ -53,22 +52,33 @@ I build apps, write about math and programming.
           domain: [1]
         }
       }
+    }).then(() => {
+      // Execute scroll alignment post-render
+      const heatmapContainer = document.getElementById('todo-heatmap');
+      const scrollWrapper = heatmapContainer.parentElement;
+      
+      if (scrollWrapper) {
+        // Force the scrollbar to the maximum right position
+        scrollWrapper.scrollLeft = scrollWrapper.scrollWidth;
+      }
     });
   }
 
-  // Execute initial DOM render
+  // Initial execution
   renderHeatmap();
 
-  // Instantiate observer to track attribute mutations
+  // Mutation observer for dynamic theme switching
   const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
       if (mutation.attributeName === 'data-theme') {
-        // Purge existing SVG nodes before re-initializing the canvas
-        cal.destroy().then(() => renderHeatmap());
+        // Destroy existing instance, then create a new one
+        cal.destroy().then(() => {
+          cal = new CalHeatmap();
+          renderHeatmap();
+        });
       }
     });
   });
 
-  // Attach observer to the root HTML node
   observer.observe(document.documentElement, { attributeFilter: ['data-theme'] });
 </script>
