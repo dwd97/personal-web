@@ -413,6 +413,10 @@ git clone ...
 
 - práci začít `git pull` a skončit `git push`
 
+### Git blame
+
+- pro získání overview, kdo modifikoval, kterou řádku kódů a v jakém commitu
+
 ## Použití jiných interpretrů
 
 - do shebangů lze napsat jiné soubory a ty se spustí, např. `#!/bin/cat` nebo i vlastní soubor v pythonu, ale absolutní cestou
@@ -492,3 +496,152 @@ git clone ...
 - `PS1='\u: \w '` - jméno uživatele a aktuální adresář
 
 - lze měnit i barva, přidat datum pomocí `$( date )`
+
+# 5. Hodina
+
+- asymetrické šifrování, viz. Úvod do počítačových sítí ze ZS
+- doporučuje se používat na více počítačích více párů veřejných/soukromých klíčů
+- v Linuxu jsou veřejné/soukromé klíče uloženy v textových souborech
+
+## SSH (Secure shell)
+
+- port 22, ale může ho správce serveru přepnout
+
+```sh
+ssh LOGIN@NAZEV_VZDALENEHO_STROJE
+```
+
+- `ssh user@localhost` - připojení na loopback adresu (127.0.0.1), pokud je port otevřen k připojení
+
+- `ssh` - většinou klient ssh, protože se připojuje k serveru SSH
+    - `ssh -v` - vytiskne log a detaily připojení k SSH
+
+- po připojení se zobrazí otisk serveru, např. ECDSA, RSA, ED25519
+    - pokud se otisk změnil - může to být man-in-the-middle útok
+
+- nastavení $PS1
+    - `export PS1='\u@\h \w\$'` - zobrazí uživatelské jméno, jméno hostitele a pracovní adresář bez barvy
+
+- `uname -a` a `hostname -f` - pro oveření, že jsem na jiném počítači
+- `free -h` - zobrazí kolik paměti je volné
+- `uptime` - zobrazí údaje o době běhu
+
+### spuštění jednoho příkazu přes ssh
+
+- `ssh login@host uname -r > local.txt` - spustí se na vzdáleném stroji a zapíše do lokálního souboru
+- `ssh login@host "uname -r > remote.txt"` - celý příkaz se spustí na vzdáleném stroji
+
+### přihlášení bez hesla
+
+- vytvořit pár klíčů a zkopírovat veřejný na vzdálený počítač
+    - generuje vždy na lokálním počítači (nebo na vzdálenem pokud se připojuje dál, např. github)
+
+- `ssh-keygen -t ed25519 -C "name@email.com"`
+    - uloží se do adresáře `~/.ssh` klíče `id_ed25519` soukromý a `id_ed25519.pub` veřejný
+    - pro správu více klíčů se používá přepínař `-i` nebo-li `ssh-copy-id -i ~/.ssh/muj_specificky_klic uzivatel@vzdaleny_hostitel` - tohle nahraje klíč na vzdálený počítač, uloží se do `~/.ssh/authorized_keys`
+
+### kopírování souborů
+
+- na vzdálený počítač: `cat local.txt | ssh login@host "cat > remote.txt"`
+- na lokální počítač: `ssh login@host cat remote.txt > local.txt`
+
+- `scp` a `rsync` - pro kopírování více souborů přes SSH
+
+- pomocí `mc` - v panelu nahoře right a tam lze zadat `login@host` pod shell link
+
+### konfigurace SSH
+
+- v `~/.ssh/config`, syntaxe je v `man 5 shh_config`
+
+```sh
+Host *
+    IdentityFile ~/.ssh/id_ed25519
+
+Host intro
+    Hostname server.cz
+    User LOGIN
+```
+
+- pak lze napsat jen `ssh intro` a připojí se pomocí klíče k SSH serveru
+
+### Git
+
+- lze se připojit k SSH git serveru
+
+- pomocí ssh adresy `git clone git@server:adresar/repozitar.git`
+
+## Síťové nástroje
+
+- `ip` a `ip addr` - příkaz na správu sítě
+
+### Network Manager
+
+- CLI rozhraní se spustí pomocí `nmcli`
+
+### Změna ip konfigurace
+
+- pro nastavení ip adresy mimo DHCP, např. propojí počítačů při přenášení souborů
+
+```sh
+sudo nmcli connection add con-name wired-static-temporary ifname enp0s31f6 type ethernet ip 192.168.177.201/24
+```
+- nastaví spojení přes ethernet, kde `con-name` znamená název profilu, a musí se uvést adresa s maskou
+
+- `sudo nmcli connection up/down/delete nazev-profilu` - na správu profilu a připojení, sudo je administrátor
+
+```sh
+nmcli connection add con-name wifi-temporary ifname wlp58s0 ssid "nazev site" wifi-sec.key-mgmt "wpa-psk" wifi-sec.psk "heslo" ip4 192.168.177.203/24
+```
+- tohle vytvoří profil pro wifi, kde `ssid` je název sítě, `wifi-sec.key-mgmt` je zabezpečení a `wifi-sec.psk` je heslo
+    - ale u WiFi většinou je DHCP, takže tam to není potřeba
+
+### Ping
+
+- pro nalezení problému, pokud ztratím spojení se serverem.
+- `ping 192.168.177.201/24` jako na ethernet profil nahoře
+
+### Traceroute
+
+- `traceroute 1.1.1.1` - cesta k serveru přes routery, posílají se ICMP package
+
+### nmap
+
+- často zakázáno správci sítě, protože se většinou používá jako příprava na kybernetický útok, kdy se skenují otevřené porty
+
+- `nmap localhost` - najde všechny otevřené porty na loopback ip adrese
+    - `sudo nmap -A localhost` - více informací
+    - `sudo -p1-65535 localhost` - větší rozsah portů (všechny)
+
+### nc (netcat)
+
+- `nc --listen 8888 --keep-open --sh-exec 'cat transfer_file.txt'` - otevře port 8888 a lze se na něj připojit pomocí `nc localhost 8888`
+
+### tmux
+
+- pro ovládání více relací terminálu v jednom terminálu pomocí serveru běžícího ssh
+- `tmux new -s nazev` nebo `tmux` spustí novou relaci
+- `tmux ls` - vypíše všechny aktivní relace
+- `tmux attach -t nazev` - připojení k relaci
+- `tmux kill-session -t nazev` - ukončení relace
+
+- `Ctrl + B +`
+    - `d` - odpojení od relace
+    - `c` - vytvoření okna
+    - `n` - další okno
+    - `p` - předchozí okno
+    - `f` - najít okno
+    - `,` - název okna
+    - `&` - zavřít okno
+    - `%` - vertikální rozdělení
+    - `"` - horizontální rozdělení
+    - `o` - prohození panelů
+    - `q` - zobrazit čísla panelů
+    - `x` - zavřít panel
+    - šípky (přepnutí panelů)
+
+- dá se upravit v `.tmux.conf`
+
+### pdfpc
+
+- na prezentování
+
