@@ -37,13 +37,21 @@ func parseFrontmatter(content []byte) (Frontmatter, string) {
 	defaultPub := true
 	fm.Published = &defaultPub
 
-	matches := fmRegex.FindSubmatch(content)
-	if len(matches) == 3 {
-		err := yaml.Unmarshal(matches[1], &fm)
-		if err != nil {
-			log.Printf("YAML parsing error: %v", err)
+	// Normalize string to eliminate BOM and arbitrary leading whitespace
+	strContent := string(content)
+	strContent = strings.TrimPrefix(strContent, "\xef\xbb\xbf")
+	strContent = strings.TrimSpace(strContent)
+
+	if strings.HasPrefix(strContent, "---") {
+		parts := strings.SplitN(strContent, "---", 3)
+		if len(parts) >= 3 {
+			err := yaml.Unmarshal([]byte(parts[1]), &fm)
+			if err != nil {
+				// Log precisely to identify malformed YAML
+				log.Printf("YAML unmarshal error: %v\n", err)
+			}
+			return fm, strings.TrimSpace(parts[2])
 		}
-		return fm, string(matches[2])
 	}
 
 	return fm, string(content)

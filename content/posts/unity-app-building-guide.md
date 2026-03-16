@@ -1,5 +1,5 @@
 ---
-title: "Building an app in Unity Guide"
+title: "Building an app in Unity"
 date: "2026-03-16"
 published: false
 ---
