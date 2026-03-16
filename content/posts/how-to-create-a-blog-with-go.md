@@ -1,3 +1,9 @@
+---
+title: "Create a blog with Go and MD"
+date: "2026-03-16"
+published: true
+---
+
 # Create a blog with Go and MD
 
 I believe that everyone should at least try to have a blog or an online presence of some kind to express himself on the internet. It's the best place to network or share ideas. That's why I decided to create my personal website [davidkrejci.dev](https://www.davidkrejci.dev) and implement a blog using Go and MD. In this post I will just share how to create a simple blog.

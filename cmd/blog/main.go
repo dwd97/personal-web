@@ -21,7 +21,33 @@ import (
 	"github.com/yuin/goldmark/renderer"
 	"github.com/yuin/goldmark/renderer/html"
 	"github.com/yuin/goldmark/util"
+	"gopkg.in/yaml.v3"
 )
+
+type Frontmatter struct {
+	Title     string `yaml:"title"`
+	Date      string `yaml:"date"`
+	Published *bool  `yaml:"published"`
+}
+
+var fmRegex = regexp.MustCompile(`(?s)^---\r?\n(.*?)\r?\n---\r?\n(.*)$`)
+
+func parseFrontmatter(content []byte) (Frontmatter, string) {
+	var fm Frontmatter
+	defaultPub := true
+	fm.Published = &defaultPub
+
+	matches := fmRegex.FindSubmatch(content)
+	if len(matches) == 3 {
+		err := yaml.Unmarshal(matches[1], &fm)
+		if err != nil {
+			log.Printf("YAML parsing error: %v", err)
+		}
+		return fm, string(matches[2])
+	}
+
+	return fm, string(content)
+}
 
 const (
 	contentDir   = "content"
@@ -392,7 +418,7 @@ func createNotePage(relPath, title, md string) string {
 		strings.TrimSuffix(relPath, filepath.Ext(relPath))) + "/"
 }
 
-func createPost(title string, md string) string {
+func createPost(title string, date string, md string) string {
 	headings := extractHeadings(md)
 
 	htmlContent := markdownToHTML(md)
@@ -403,7 +429,7 @@ func createPost(title string, md string) string {
 
 	postInner := renderTemplate("templates/post.html", map[string]string{
 		"TITLE":   title,
-		"DATE":    "",
+		"DATE":    date,
 		"CONTENT": htmlContent,
 	})
 
@@ -505,10 +531,19 @@ func readMarkdownPosts(dir string) []string {
 		}
 
 		content, _ := os.ReadFile(path)
+		fm, mdContent := parseFrontmatter(content)
 
-		title := strings.TrimSuffix(info.Name(), filepath.Ext(info.Name()))
-		slug := createPost(title, string(content))
+		// Evaluate publishing constraint
+		if fm.Published != nil && !*fm.Published {
+			return nil
+		}
 
+		title := fm.Title
+		if title == "" {
+			title = strings.TrimSuffix(info.Name(), filepath.Ext(info.Name()))
+		}
+
+		slug := createPost(title, fm.Date, mdContent)
 		posts = append(posts, slug)
 		return nil
 	})
