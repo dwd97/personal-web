@@ -645,3 +645,59 @@ nmcli connection add con-name wifi-temporary ifname wlp58s0 ssid "nazev site" wi
 
 - na prezentování
 
+# 6. Hodina
+
+## Git pokračování - větvení
+
+- vytvoření nové větve:
+    - `git branch issue/4-file-issue`
+
+- přepnutí na větev:
+    - `git switch issue/4-file-issue`
+
+- oba příkazy najednou:
+    - `git switch -c issue/4-file-issue`
+
+- pro obnovu souborů (dříve používal i k tvorbě větví)
+    - `git checkout`
+
+- nahrání nové větve
+    - `git push --set-upstream origin issue/4-file-issue`
+
+- zobrazení grafu
+    - `git log --graph`
+
+- zobrazení seznam větví
+    - `git branch`
+    - `git branch --all`
+
+- mergnutí branchů do sebe
+    - `git switch master`
+    - `git merge issue/4-file-issue`
+
+- smazání větve
+    - `git branch -d issue/4-file-issue`
+
+- zobrazení remote repozitáře
+    - `git remote -v`
+
+- přidání remote
+    - `git remote add upstream username@giturl.git`
+
+- aktualizace z remote repozitáře
+    - `git fetch upstream`
+
+- změnit commit zprávu zpětně
+    - `git commit --amend`
+
+## VLC
+- na přehrávání videií, lze spustit i přes web na port
+
+## Youtube-dl a yt-dlp
+- na stahování videií i z různých webů než YouTube
+- `yt-dlp "youtube-url"`
+
+## ffmpeg
+- konvertor videoformátů
+
+# 7. Hodina
