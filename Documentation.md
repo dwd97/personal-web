@@ -87,3 +87,4 @@ personal-web/
   - [ ] Posts (sorted by year)
   - [ ] About
   - [ ] Projects
+- [ ] Make reference sheets by making one md file with links to other md files in structural order and it will server as github documentation - use go to make this possible or use folder structure with the main md file. Figure out the best way possible
