@@ -701,3 +701,250 @@ nmcli connection add con-name wifi-temporary ifname wlp58s0 ssid "nazev site" wi
 - konvertor videoformátů
 
 # 7. Hodina
+
+## Pandoc
+
+- převaděč mezi mnoha formáty jako HTML, Markdown, LaTeX, PDF, Word atd.
+
+- `pandoc --standalone website.md > website.html`
+    - nebo specifikovat výstup pomocí `-o`
+    - `--standalone` je jen potřeba pro html
+- `pandoc --template template.html post.md > post.html`
+    - vytvoři webovku pomocí šablony
+    - v `template.html` se nahrazení specifikuje pomocí `$body$` ...
+
+    
+## Logická skladba programu
+
+- exit kódy v praxi
+    - `&&` - vykoná další příkaz pokud první uspěl
+    - `||` - vykoná další příkaz pokud první selže
+
+- řetězení:
+    - `test -f soubor.md && echo "soubor.md existuje" || echo "soubor.md neexistuje"`
+
+- proměnná:
+    - deklarace: `MY_VARIABLE="value"`
+    - použití: pomocí $, tedy `echo "Value in MY_VARIABLE is $MY_VARIABLE."`
+    - žádné mezery
+
+- čtení proměnných prostředí
+    - `os.getenv()`
+        - `variable = os.getenv('MY_VARIABLE', 'OTHER_VARIABLE')`
+    - `os.environ`
+    - je potřeba zkontrolovat, že taková proměnná není None nebo nastavit defaultní hodnotu
+
+- zpřístupnění čitelnosti pro ostatní programy:
+    - `export VAR`
+    - `export VAR="value"`
+    - `export VAR command` - jen pro konkrétní příkaz
+    - exportuje se jen pro dobu běhu programu
+
+- `env` - seznam všech exportovaných proměnných
+- `set` - seznam všech proměnných
+    - `$HOME` - cesta k domovské adrese
+    - `$PWD` - pracovní adresář
+    - `$USER` - jméno aktuálně přihlášeného uživatele
+    - `$RANDOM` - náhodné číslo
+
+## $PATH
+
+- zobrazit pomocí `echo $PATH`
+    - lze přidat vlastní složku například `~/bin` a tam ukládat skripty, aby byly přístupné všude
+
+- shebang může dostat právě jeden volitelný argument
+    - `#!/usr/bin/env python3` - najde a spustí z environment variable
+
+- `"$@"` - předá všechny parametry jinému programu
+
+```
+#!/bin/bash
+
+pandoc --self-contained --base-header-level=1 --strip-comments "$@"
+```
+
+## výchozí hodnota
+
+- `"${EDITOR:-mcedit}" file.txt`
+- na začátku skriptu: `EDITOR="${EDITOR:-mcedit}"`, pak jen `"$EDITOR" file.txt`
+
+- pokud chci napsat proměnnou a pak písmeno, tak:
+
+```
+prefix="text"
+echo "Do something ${prefix}here"
+```
+
+## pro testování podmínky
+
+```
+verbose=false
+test "${1:-none}" = "--verbose" && verbose=true
+```
+
+pak testovat a vypisovat pomocí
+
+`$verbose && echo "Something is happening"`
+
+## expanze proměnných
+
+- mezery a wildcardy vyžadují zvláštní pozornost
+
+- `some_dir="${some_dir:-default}"`, pak může uživatel zavolat `some_dir=not_default ./skript.sh`
+
+## nahrazování příkazů
+
+- `temp="$( mktemp -d )"` - výstup mktemp -d se uloží do temp
+
+```
+temp="$( mktemp -d )"
+stdout="$( command 2>"$temp/err.txt" )"
+stderr="$( cat "$temp/err.txt" )"
+
+rm -rf "$temp"
+```
+
+```
+echo "this architecture is $( uname -m )."
+```
+
+## funkce v shellu
+
+- v shellu nespecifikují argumenty ani návratovou hodnotu
+    - argumenty jsou předány jako v shellovém skriptu `$1, $2, ...`
+
+- lze nastavit funkci do proměnné a pak volat, např. logování
+
+```
+func() {
+    commands
+}
+```
+
+- návratové hodnoty ukončí funkci
+- proměnné s označením `local` jsou lokální uvnitř funkce (ale není oficiální rozšíření shellu)
+    - původní hodnota proměnné neoznačené local se uloží a po návratu funkce obnoví
+
+## viditelnost proměnných
+
+- když program upraví exportované proměnné, které dostane od shellu při spuštění, tak se hodnoty upraví jen lokálně po dobu běhu programu a pak se vrátí zpátky
+
+## subshell
+
+- uzavřením do `( .. )`
+- taky není vidět pro okolní shell
+
+## aritmetika v shellu
+
+- pomocí `$(( .. ))`
+
+```
+x=1
+x=$(( x + 1 ))
+```
+
+- užitečné na měření doby běhu programu
+
+## shell check
+
+- kontrola správnosti programu
+    - překlepy, syntaxe, lehčí optimalizace
+
+- použije se `shellcheck skript.sh`
+- i pro připomínky ke stylu kódu: `shellcheck -o all skript.sh`
+
+## pylint
+
+- pro kontrolu pythonových skriptů
+- používá se: `pylint skript.py`
+
+# 8. Hodina
+
+## načítání konfigurace
+
+- příklad config.rc (runtime configuration): `html_dir=www`
+    - spustí se i příkazy uvnitř
+    - většinou neobsahují shebang, nejsou samostatně spustitelné
+
+- přidání do skriptu pomocí:
+```
+. config.rc
+source config.rc
+```
+
+## `for loop`
+
+```
+for VARIABLE in Val1 Val2 Val3; do
+    something
+done
+```
+
+## `if` a `else`
+
+- podmínka je příkaz co se vykoná a jeho exit kód určuje zda je podmínka splněna nebo ne
+
+```
+if command_checking_condition; then
+    success
+elif something_else; then
+    success too
+else
+    do something else
+fi    
+```
+
+- ukončený pomocí `fi`
+- často pomocí `test`, např.
+
+```
+if test -d .git; then
+    echo "In git repo"
+fi    
+```
+
+- synonymem pro `test` je `[ .. ]`, např. `[ -d .git ]`
+
+## while
+
+```
+while condition; do
+    something
+done    
+```
+
+- `break` a `continue` - funguje stejně jako v jiných jazycích
+
+## switch
+
+```
+case value_for_switch in
+    option1) commands ;;
+    option2) commands ;;
+    *) default commands ;;
+esac
+```
+
+## parametry skriptů
+
+- "$@" - pro všechny parametry
+- `$1, $2, ...` - pro parametry
+- `$#` - počet argumentů
+- `$0` - název skriptu
+
+### getopts
+
+- není uživatelsky přívětivé
+
+## `read`
+
+- `read FIRST_LINE < input.txt`
+- vlastně na čtení, ale pokaždé otevře soubor, než stdin, který půjde po řádcích
+
+## SCP a rsync
+
+- pro kopírování souborů mezi dvěma počítači - `scp`
+- `scp file.txt user@machine:remote_file.txt`
+
+- rsync je novější a vyvinutější, namísto scp musí být nainstalován na obou stranách
+- syntaxe stejná jak u scp
