@@ -948,3 +948,125 @@ esac
 
 - rsync je novější a vyvinutější, namísto scp musí být nainstalován na obou stranách
 - syntaxe stejná jak u scp
+
+# 9. Hodina
+
+- správa uživatelských účtů
+    - `getent passwd USERNAME` - vypíše uživatele
+    - `useradd`
+    - `userdel`
+    - `usermod`
+
+## sudo
+- oprávnění předáváné jiným uživatelům na určité příkazy od uživatele root. Po spuštění `sudo ...` se příkaz chová tak, jak by ho spustil uživatel root.
+- Uživatel root může nastavit libovolné omezení na způsob použití příkazu.
+
+## package manager (správce balíčků)
+- pro Fedoru to je `dnf`
+- hledání - `dnf search tool_name`
+    - `.noarch` - balíčky v interpretovaných jazycích
+    - `.x86-64` - balíčky přeloženy do strojového kódu
+- instalace - `sudo dnf install tool_name`
+- aktualizace všeho - `sudo dnf upgrade`
+
+## služby a démoni
+
+- programy běžící na pozadí
+- řídí se jednotně, nejběžněji: `systemd`
+    - `sudo systemctl start sshd` - spustí ssh server
+    - `sudo systemctl status sshd` - stav ssh serveru
+    - `sudo systemctl stop sshd` - vypne ssh server
+    - `sudo systemctl enable sshd` - povolí službu při každém spuštění
+    - `journalctl -u sshd` - zobrazí logy SSH daemona
+
+## cron
+- opakované spuštění úloh
+- umístění skriptů do `/etc/cron.daily/` pro denní spuštění, např. zálohy, `/etc/cron.monthly` pro měsíční, `/etc/cron.d` pro vlastní konfiguraci, kde se zadává do souboru minuta hodina den(v měsíci) měsíc den v týdnu ... a pak uživatel a odkaz na skript.
+    - `12 1 * * * root /usr/skript.sh`
+
+- pro běžné uživatele - příkaz `crontab -e` spustí editor, kam lze zadávat tyto příkazy
+
+# 10. Hodina
+
+## síťová konfigurace
+
+- `ip addr`
+    - lo = loopback
+    - enp0s31f6 = ethernetový kabel
+    - wlp60s0 = wifi
+
+## regex (regular expressions)
+
+- grep je g (globally), re (regex), p (print)
+- `grep 'system' /etc/passwd` - vypíše řádky obsahující slovo system
+- `'^system'` -  začínající na slovo system
+- `'system$'` - končící na slovo system
+- `'^[rst]'` - začínající písmenem r,s nebo t
+- `'[0-9][0-9][0-9]'` - všechna 3-místná, 4-místná, ... čísla (bez ukotvení se nestarají o ostatní znaky)
+- `'^[^rst]'` - negace uvnitř, tedy nezačíná r,s nebo t
+- `'(re)*'` - může se opakovat re, rere, rerere za sebou
+- `'[0-9]+'` - musí aspoň 1 číslo
+- `(a|b|c)` zkratka pro `[abc]`, tedy alternativy, např `(start|stop)`
+- `{M,N}` - rozsah M až N - krát se musí opakovat
+- `{N}` - musí se N krát opakovat
+- `\.` - pro použití . jako znaku ne jako funkce
+
+### sed
+
+- nahrazování, syntaxe `sed 's:text:replaced:g'` - s (substitute) : co : čím : g (global, tedy nejenom první výskyt)
+
+## build systémy
+
+- tedy proces, co zavolá spoustu skriptů, aby se stalo něco většího, ale zároveň optimalizuje
+
+### Makefile
+
+- posloupnost pravidel
+
+# 11. Hodina
+
+- podle vlastnictví souborů mají různí uživatelé různé přístupy. Pak podle skupin vlastníků.
+    - opravnění jsou: r (read), w (write), x (execute)
+- uživatel root (oprávněn dělat cokoliv)
+- oprávnění `drwxr-xr-x 1 ...`
+    - první: `d` = adresář, `-` = soubor
+    - pak oprávnění `rwx` pro vlastníka, skupinu, ostatní
+- na změnu oprávnění lze použít `chmod`
+
+## Procesy (a signály)
+
+## Soubory a správa úložišť
+
+# 12. Hodina
+
+## Port forwarding (SSH)
+
+## Izolované prostředí
+
+- pomocí konfiguračního souboru
+- takhle je možné pracovat na projektech v izolovaném prostředí a nebýt ovlivněn instalací na počítači.
+
+### instalační adresáře
+
+- `/usr` - instaluje sem např. DNF, systémový správce balíčků
+- `/usr/local` - sem instalují správci balíčků
+- a další
+
+# 13. Hodina
+
+## Kontejnery
+
+- izolované prostředí, co se chová jak virtualizovaný stroj. Má dostupný jen nějaký adresář. Můžou běžet aplikace jen pro tentýž operační systém.
+- užitečné pro vývoj, např. pro databázový nebo webový server
+- **Podman** nebo **Docker** - Podman je novější a umožňuje rootless mode.
+
+### Obraz (image) vs Kontejner
+
+- Obraz jsou vlastně soubory a vše, co potřebuje. Kontejner si to zkopíruje a spustí se, neukládá bez požádání do obrazu, ale do své instance.
+- Procesy v kontejneru jsou vidět hostitelem, ale kontejner nevidí procesy hostitele
+- Odvozené obrazy kontejneru jsou uloženy jen jako rozdíl od základního obrazu. Mezi nejčastější je Alpine Linux (Apk = Apline package manager pro správu balíčků).
+
+
+# 14. Hodina
+
+## 
