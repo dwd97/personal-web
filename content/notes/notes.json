@@ -1,6 +1,47 @@
 {
   "sections": [
     {
+      "id": "zs_2026_2027",
+      "title": "Winter semester 2026/27 (WIP)",
+      "items": [
+        {
+          "file": "algoritmy_a_datove_struktury_2.md",
+          "title": "Algoritmy a datové struktury 2",
+          "type": "md"
+        },
+        {
+          "file": "databazove_systemy.md",
+          "title": "Databázové systémy",
+          "type": "md"
+        },
+        {
+          "file": "kombinatorika_a_grafy_1.md",
+          "title": "Kombinatorika a grafy 1",
+          "type": "md"
+        },
+        {
+          "file": "programovani_mobilnich_zarizeni.md",
+          "title": "Programování mobilních zařízení",
+          "type": "md"
+        },
+        {
+          "file": "programovani_v_cpp.md",
+          "title": "Programování v C++",
+          "type": "md"
+        },
+        {
+          "file": "vyrokova_a_predikatorova_logika.md",
+          "title": "Výroková a predikátová logika",
+          "type": "md"
+        },
+        {
+          "file": "vyvoj_webovych_aplikaci.md",
+          "title": "Vývoj webových aplikací",
+          "type": "md"
+        }
+      ]
+    },
+    {
       "id": "ls_2025_2026",
       "title": "Summer semester 2025/26 (WIP)",
       "items": [
