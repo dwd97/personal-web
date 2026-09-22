@@ -1,4 +1,5 @@
-# Intro to C/C++
+# Počítačové systémy
+## Intro to C/C++
 
 - static type system (všechny proměnné musí mít předem určený typ)
 - compiler to machine instructions -> dobré pro systémové programování, HPC (výpočetní cluster)

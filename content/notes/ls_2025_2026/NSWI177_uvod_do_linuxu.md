@@ -1,4 +1,5 @@
-# 1. hodina
+# Linux
+## 1. hodina
 
 ## Co je Linux
 
