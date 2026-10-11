@@ -390,7 +390,9 @@ func renderNotes(sections []NoteSection) string {
 	for _, s := range sections {
 		b.WriteString("<h3>" + s.Name + "</h3><ul>")
 		for _, item := range s.Items {
-			b.WriteString(`<li><a href="` + item.URL + `">` +
+			// Umami click event, so PDF opens show up despite having no tracker
+			b.WriteString(`<li><a href="` + item.URL + `" data-umami-event="` +
+				item.Title + `" data-umami-event-semester="` + s.Name + `">` +
 				item.Title + `</a></li>`)
 		}
 		b.WriteString("</ul>")
