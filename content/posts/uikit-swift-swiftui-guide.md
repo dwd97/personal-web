@@ -1,7 +1,7 @@
 ---
 title: "SwiftUI / UIKit / Swift Guide - Making iOS apps"
 date: "2026-03-16"
-published: true
+published: false
 ---
 
 ## Swift

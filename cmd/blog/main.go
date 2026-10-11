@@ -604,9 +604,14 @@ func copyFile(src, dst string) {
 func generateHome(posts []string, notes []NoteSection) {
 	indexInner := renderTemplate("templates/index.html", map[string]string{})
 
+	// Hide the whole section when every post is unpublished
 	var list strings.Builder
-	for _, slug := range posts {
-		list.WriteString(`<li><a href="/posts/` + slug + `/">` + slug + `</a></li>`)
+	if len(posts) > 0 {
+		list.WriteString(`<section class="posts"><h2>Posts</h2><ul class="post-list">`)
+		for _, slug := range posts {
+			list.WriteString(`<li><a href="/posts/` + slug + `/">` + slug + `</a></li>`)
+		}
+		list.WriteString(`</ul></section>`)
 	}
 
 	indexInner = strings.Replace(indexInner, "{{BLOG_POSTS}}", list.String(), 1)

@@ -1,54 +1,38 @@
 {
   "sections": [
     {
-      "id": "zs_2026_2027",
-      "title": "Winter semester 2026/27 (WIP)",
-      "items": [
-        {
-          "file": "NTIN061_algoritmy_a_datove_struktury_2.md",
-          "title": "Algoritmy a datové struktury 2",
-          "type": "md"
-        },
-        {
-          "file": "NDBI025_databazove_systemy.md",
-          "title": "Databázové systémy",
-          "type": "md"
-        },
-        {
-          "file": "NDMI011_kombinatorika_a_grafy_1.md",
-          "title": "Kombinatorika a grafy 1",
-          "type": "md"
-        },
-        {
-          "file": "NPRG056_programovani_mobilnich_zarizeni.md",
-          "title": "Programování mobilních zařízení",
-          "type": "md"
-        },
-        {
-          "file": "NPRG041_programovani_v_cpp.md",
-          "title": "Programování v C++",
-          "type": "md"
-        },
-        {
-          "file": "NAIL062_vyrokova_a_predikatorova_logika.md",
-          "title": "Výroková a predikátová logika",
-          "type": "md"
-        },
-        {
-          "file": "NSWI142_vyvoj_webovych_aplikaci.md",
-          "title": "Vývoj webových aplikací",
-          "type": "md"
-        }
-      ]
-    },
-    {
       "id": "ls_2025_2026",
-      "title": "Summer semester 2025/26 (WIP)",
+      "title": "Summer semester 2025/26",
       "items": [
+        {
+          "file": "NTIN060_algoritmy_a_datove_struktury_1.pdf",
+          "title": "Algoritmy a datové struktury 1",
+          "type": "pdf"
+        },
+        {
+          "file": "NMAI058_linearni_algebra_2.pdf",
+          "title": "Lineární algebra 2",
+          "type": "pdf"
+        },
+        {
+          "file": "NMAI054_matematicka_analyza_1.pdf",
+          "title": "Matematická analýza 1",
+          "type": "pdf"
+        },
+        {
+          "file": "NSWI170_pocitacove_systemy.pdf",
+          "title": "Počítačové systémy",
+          "type": "pdf"
+        },
         {
           "file": "NSWI170_pocitacove_systemy.md",
           "title": "Počítačové systémy",
           "type": "md"
+        },
+        {
+          "file": "NPRG031_programovani_2.pdf",
+          "title": "Programování 2",
+          "type": "pdf"
         },
         {
           "file": "NPRG031_programovani_2.md",
